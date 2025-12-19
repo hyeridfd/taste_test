@@ -209,7 +209,7 @@ st.markdown("""
     /* 파란색 박스 - 단맛 */
     .blue-box {
         background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
-        padding: 1.8rem;
+        padding: 3rem 4rem;
         border-radius: 15px;
         border-left: 5px solid #2196F3;
         margin: 1.5rem 0;
