@@ -87,6 +87,12 @@ st.markdown("""
         margin: 0 auto;
     }
     
+    /* 메인 블록 컨테이너 숨기기 */
+    .main .block-container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+    
     /* 카드 스타일 */
     .card {
         background: rgba(255, 255, 255, 0.95);
@@ -134,12 +140,21 @@ st.markdown("""
         padding: 0.75rem;
         font-size: 1rem;
         transition: all 0.3s ease;
+        background: white;
     }
     
     .stTextInput > div > div > input:focus,
     .stNumberInput > div > div > input:focus {
         border-color: #4DB6AC;
         box-shadow: 0 0 0 3px rgba(77, 182, 172, 0.1);
+    }
+    
+    /* 라벨 스타일 */
+    .stTextInput > label,
+    .stNumberInput > label {
+        font-weight: 600;
+        color: #2E7D32;
+        font-size: 1.05rem;
     }
     
     /* 버튼 스타일 */
@@ -171,14 +186,14 @@ st.markdown("""
     }
     
     /* 섹션 헤더 */
-    # .section-header {
-    #     background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
-    #     padding: 1.5rem;
-    #     border-radius: 15px;
-    #     margin: 2rem 0 1.5rem 0;
-    #     border-left: 5px solid #4CAF50;
-    #     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    # }
+    .section-header {
+        background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+        padding: 1.5rem;
+        border-radius: 15px;
+        margin: 2rem 0 1.5rem 0;
+        border-left: 5px solid #4CAF50;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
     
     /* 안내 박스 - 노란색 */
     .instruction-box {
@@ -272,7 +287,7 @@ st.markdown("""
     }
     
     /* 사이드바 스타일 */
-    .css-1d391kg {
+    [data-testid="stSidebar"] {
         background: linear-gradient(180deg, #E8F5E9 0%, #C8E6C9 100%);
     }
     
@@ -347,6 +362,16 @@ st.markdown("""
         border-radius: 10px;
         padding: 1rem;
     }
+    
+    /* 빈 공간 제거 */
+    .element-container:has(> .stMarkdown > div > p:empty) {
+        display: none;
+    }
+    
+    /* 불필요한 여백 제거 */
+    .block-container {
+        padding-top: 3rem;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -364,7 +389,7 @@ ADMIN_PASSWORD = "admin123"
 def page_intro():
     # 헤더 이미지 또는 타이틀
     st.markdown("""
-    <div style="text-align: center; padding: 2rem 0;">
+    <div style="text-align: center; padding: 2rem 0 1rem 0;">
         <h1 style="font-size: 3rem; color: #2E7D32; margin-bottom: 0.5rem;">
             🍽️ 평창 웰니스 클래스
         </h1>
@@ -416,7 +441,7 @@ def page_intro():
     # 이메일 입력 카드
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.markdown("### 📧 시작하기")
-    email = st.text_input("이메일 주소를 입력해주세요 *", placeholder="example@email.com", label_visibility="visible")
+    email = st.text_input("이메일 주소를 입력해주세요 *", placeholder="example@email.com", key="email_input")
     
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
@@ -441,14 +466,15 @@ def page_basic_info():
     st.markdown('<div class="card">', unsafe_allow_html=True)
     
     # 성명
-    name = st.text_input("👤 성명 *", value=st.session_state.responses.get('name', ''), placeholder="홍길동")
+    name = st.text_input("👤 성명 *", value=st.session_state.responses.get('name', ''), placeholder="홍길동", key="name_input")
     
     # 성별
     st.markdown("#### ⚥ 성별 *")
     gender = st.radio("성별 선택", ["남", "여"], 
                      index=0 if st.session_state.responses.get('gender', '남') == '남' else 1,
                      horizontal=True,
-                     label_visibility="collapsed")
+                     label_visibility="collapsed",
+                     key="gender_input")
     
     st.markdown("---")
     
@@ -458,19 +484,22 @@ def page_basic_info():
         st.markdown("#### 🎂 나이")
         age = st.number_input("나이 *", min_value=1, max_value=120, 
                              value=st.session_state.responses.get('age', 30),
-                             label_visibility="collapsed")
+                             label_visibility="collapsed",
+                             key="age_input")
     
     with col2:
         st.markdown("#### 📏 신장")
         height = st.number_input("신장(cm) *", min_value=50, max_value=250, 
                                 value=st.session_state.responses.get('height', 170),
-                                label_visibility="collapsed")
+                                label_visibility="collapsed",
+                                key="height_input")
     
     with col3:
         st.markdown("#### ⚖️ 체중")
         weight = st.number_input("체중(kg) *", min_value=20, max_value=300, 
                                 value=st.session_state.responses.get('weight', 70),
-                                label_visibility="collapsed")
+                                label_visibility="collapsed",
+                                key="weight_input")
     
     st.markdown('</div>', unsafe_allow_html=True)
     
@@ -483,7 +512,7 @@ def page_basic_info():
             st.rerun()
     
     with col2:
-        if st.button("다음 단계로 →", type="primary", use_container_width=True):
+        if st.button("다음 단계로 →", type="primary", use_container_width=True, key="next_basic"):
             if name:
                 st.session_state.responses['name'] = name
                 st.session_state.responses['gender'] = gender
@@ -524,7 +553,8 @@ def page_sweet_preference():
         options=["1", "2", "3", "4", "5"],
         index=None if 'sweet_preference' not in st.session_state.responses else ["1", "2", "3", "4", "5"].index(st.session_state.responses['sweet_preference']),
         horizontal=True,
-        label_visibility="visible"
+        label_visibility="visible",
+        key="sweet_input"
     )
     
     st.markdown('</div>', unsafe_allow_html=True)
@@ -575,7 +605,8 @@ def page_salty_preference():
         options=["1", "2", "3", "4", "5"],
         index=None if 'salty_preference' not in st.session_state.responses else ["1", "2", "3", "4", "5"].index(st.session_state.responses['salty_preference']),
         horizontal=True,
-        label_visibility="visible"
+        label_visibility="visible",
+        key="salty_input"
     )
     
     st.markdown('</div>', unsafe_allow_html=True)
@@ -693,20 +724,20 @@ def page_complete():
     col1, col2 = st.columns(2)
     
     with col1:
-        if st.button("📥 응답 데이터 다운로드", type="primary", use_container_width=True):
-            response_data = {
-                "제출시간": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                **st.session_state.responses
-            }
-            
-            json_str = json.dumps(response_data, ensure_ascii=False, indent=2)
-            st.download_button(
-                label="💾 JSON 파일 다운로드",
-                data=json_str,
-                file_name=f"미각MPTI_{st.session_state.responses.get('name', 'unknown')}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
-                mime="application/json",
-                use_container_width=True
-            )
+        response_data = {
+            "제출시간": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            **st.session_state.responses
+        }
+        
+        json_str = json.dumps(response_data, ensure_ascii=False, indent=2)
+        st.download_button(
+            label="📥 응답 데이터 다운로드",
+            data=json_str,
+            file_name=f"미각MPTI_{st.session_state.responses.get('name', 'unknown')}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
+            mime="application/json",
+            use_container_width=True,
+            type="primary"
+        )
     
     with col2:
         if st.button("🔄 처음으로 돌아가기", use_container_width=True):
@@ -728,7 +759,7 @@ def admin_login():
     
     st.markdown('<div class="card">', unsafe_allow_html=True)
     
-    password = st.text_input("🔑 비밀번호를 입력하세요", type="password")
+    password = st.text_input("🔑 비밀번호를 입력하세요", type="password", key="admin_password")
     
     col1, col2, col3 = st.columns([1, 1, 1])
     
@@ -837,7 +868,8 @@ def admin_page():
         if '성명' in df_db.columns and '이메일' in df_db.columns:
             selected_option = st.selectbox(
                 "참여자 선택",
-                options=df_db.apply(lambda x: f"{x['성명']} ({x['이메일']})", axis=1).tolist()
+                options=df_db.apply(lambda x: f"{x['성명']} ({x['이메일']})", axis=1).tolist(),
+                key="admin_select"
             )
             
             if selected_option:
