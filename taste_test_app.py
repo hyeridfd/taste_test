@@ -171,14 +171,14 @@ st.markdown("""
     }
     
     /* 섹션 헤더 */
-    .section-header {
-        background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
-        padding: 1.5rem;
-        border-radius: 15px;
-        margin: 2rem 0 1.5rem 0;
-        border-left: 5px solid #4CAF50;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    }
+    # .section-header {
+    #     background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+    #     padding: 1.5rem;
+    #     border-radius: 15px;
+    #     margin: 2rem 0 1.5rem 0;
+    #     border-left: 5px solid #4CAF50;
+    #     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    # }
     
     /* 안내 박스 - 노란색 */
     .instruction-box {
