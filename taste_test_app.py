@@ -94,14 +94,14 @@ st.markdown("""
     }
     
     /* 카드 스타일 */
-    .card {
-        background: rgba(255, 255, 255, 0.95);
-        padding: 2.5rem;
-        border-radius: 25px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-        margin: 2rem 0;
-        backdrop-filter: blur(10px);
-    }
+    # .card {
+    #     background: rgba(255, 255, 255, 0.95);
+    #     padding: 2.5rem;
+    #     border-radius: 25px;
+    #     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    #     margin: 2rem 0;
+    #     backdrop-filter: blur(10px);
+    # }
     
     /* 헤더 스타일 */
     h1 {
