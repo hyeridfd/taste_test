@@ -195,16 +195,16 @@ st.markdown("""
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     }
     
-    /* 안내 박스 - 노란색 */
-    .instruction-box {
-        background: linear-gradient(135deg, #FFF9C4 0%, #FFF59D 100%);
-        padding: 1.5rem;
-        border-radius: 15px;
-        border-left: 5px solid #FBC02D;
-        margin: 1.5rem 0;
-        box-shadow: 0 4px 15px rgba(251, 192, 45, 0.2);
-        animation: fadeIn 0.5s ease-in;
-    }
+    # /* 안내 박스 - 노란색 */
+    # .instruction-box {
+    #     background: linear-gradient(135deg, #FFF9C4 0%, #FFF59D 100%);
+    #     padding: 1.5rem;
+    #     border-radius: 15px;
+    #     border-left: 5px solid #FBC02D;
+    #     margin: 1.5rem 0;
+    #     box-shadow: 0 4px 15px rgba(251, 192, 45, 0.2);
+    #     animation: fadeIn 0.5s ease-in;
+    # }
     
     /* 파란색 박스 - 단맛 */
     .blue-box {
