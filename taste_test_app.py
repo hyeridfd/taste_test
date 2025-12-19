@@ -107,18 +107,68 @@ st.markdown("""
         font-weight: 600;
     }
     
-    /* 라디오 버튼 완전히 숨기기 */
-    div[data-testid="stRadio"] > div {
-        display: none !important;
-    }
-    
-    /* 라디오 라벨은 표시 */
+    /* 라디오 버튼 커스텀 스타일 */
     div[data-testid="stRadio"] > label {
-        display: block !important;
         font-size: 1.15rem;
         font-weight: 600;
         color: #2E7D32;
         margin-bottom: 1rem;
+    }
+    
+    /* 라디오 버튼 컨테이너 스타일 */
+    div[data-testid="stRadio"] > div {
+        background: transparent;
+        padding: 0;
+        display: flex;
+        justify-content: space-evenly;
+        gap: 1rem;
+    }
+    
+    /* 각 라디오 버튼 아이템 */
+    div[data-testid="stRadio"] > div > label {
+        background: white;
+        border: 3px solid #E0E0E0;
+        border-radius: 15px;
+        padding: 1.5rem 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 120px;
+        flex: 1;
+    }
+    
+    div[data-testid="stRadio"] > div > label:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        border-color: #B0B0B0;
+    }
+    
+    /* 선택된 라디오 버튼 */
+    div[data-testid="stRadio"] > div > label:has(input:checked) {
+        background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+        border: 3px solid #4CAF50;
+        box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+        transform: translateY(-8px);
+    }
+    
+    /* 라디오 버튼 숨기기 */
+    div[data-testid="stRadio"] input[type="radio"] {
+        display: none;
+    }
+    
+    /* 라디오 버튼 텍스트 스타일 */
+    div[data-testid="stRadio"] > div > label > div {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #424242;
+        margin-top: 0.5rem;
+    }
+    
+    div[data-testid="stRadio"] > div > label:has(input:checked) > div {
+        color: #2E7D32;
     }
     
     /* 입력 필드 스타일 */
@@ -350,6 +400,68 @@ st.markdown("""
     .block-container {
         padding-top: 3rem;
     }
+    
+    /* 실린더 아이콘 CSS */
+    .cylinder-icon {
+        width: 70px;
+        height: 90px;
+        position: relative;
+        margin: 0 auto 0.5rem auto;
+    }
+    
+    .cylinder-top {
+        width: 70px;
+        height: 18px;
+        background: linear-gradient(180deg, #E0E0E0 0%, #BDBDBD 100%);
+        border-radius: 50%;
+        position: absolute;
+        top: 0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    
+    .cylinder-body {
+        width: 70px;
+        height: 72px;
+        background: linear-gradient(90deg, #F5F5F5 0%, #EEEEEE 50%, #F5F5F5 100%);
+        position: absolute;
+        top: 9px;
+        border-radius: 0 0 8px 8px;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .cylinder-bottom {
+        width: 70px;
+        height: 18px;
+        background: linear-gradient(180deg, #BDBDBD 0%, #9E9E9E 100%);
+        border-radius: 50%;
+        position: absolute;
+        bottom: 0;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* 선택된 실린더 색상 */
+    div[data-testid="stRadio"] > div > label:has(input:checked) .cylinder-top {
+        background: linear-gradient(180deg, #A5D6A7 0%, #81C784 100%);
+    }
+    
+    div[data-testid="stRadio"] > div > label:has(input:checked) .cylinder-body {
+        background: linear-gradient(90deg, #C8E6C9 0%, #A5D6A7 50%, #C8E6C9 100%);
+    }
+    
+    div[data-testid="stRadio"] > div > label:has(input:checked) .cylinder-bottom {
+        background: linear-gradient(180deg, #81C784 0%, #66BB6A 100%);
+    }
+    
+    /* 반응형 디자인 */
+    @media (max-width: 768px) {
+        div[data-testid="stRadio"] > div {
+            flex-wrap: wrap;
+        }
+        
+        div[data-testid="stRadio"] > div > label {
+            min-width: 100px;
+        }
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -492,138 +604,6 @@ def page_basic_info():
             else:
                 st.error("❌ 모든 필수 항목을 입력해주세요.")
 
-def render_sample_selection_ui(selected_value, color_theme):
-    """시료 선택 시각적 UI 생성"""
-    
-    # 색상 테마 설정
-    if color_theme == "blue":
-        bg_color = "linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%)"
-        border_color = "#2196F3"
-        selected_bg = "linear-gradient(135deg, #BBDEFB 0%, #90CAF9 100%)"
-        selected_border = "#1976D2"
-    else:  # red
-        bg_color = "linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%)"
-        border_color = "#F44336"
-        selected_bg = "linear-gradient(135deg, #FFCDD2 0%, #EF9A9A 100%)"
-        selected_border = "#D32F2F"
-    
-    # 시료 선택 UI 생성
-    cols = st.columns(5)
-    
-    for i, col in enumerate(cols, 1):
-        with col:
-            is_selected = (selected_value == str(i))
-            
-            # 선택 여부에 따른 스타일
-            if is_selected:
-                st.markdown(f"""
-                <div style="
-                    background: {selected_bg};
-                    border: 3px solid {selected_border};
-                    border-radius: 15px;
-                    padding: 1.5rem 0.8rem;
-                    text-align: center;
-                    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-                    transform: translateY(-5px);
-                    transition: all 0.3s ease;
-                ">
-                    <div style="
-                        width: 70px;
-                        height: 90px;
-                        position: relative;
-                        margin: 0 auto 1rem auto;
-                    ">
-                        <div style="
-                            width: 70px;
-                            height: 18px;
-                            background: linear-gradient(180deg, #A5D6A7 0%, #81C784 100%);
-                            border-radius: 50%;
-                            position: absolute;
-                            top: 0;
-                            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-                        "></div>
-                        <div style="
-                            width: 70px;
-                            height: 72px;
-                            background: linear-gradient(90deg, #C8E6C9 0%, #A5D6A7 50%, #C8E6C9 100%);
-                            position: absolute;
-                            top: 9px;
-                            border-radius: 0 0 8px 8px;
-                            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
-                        "></div>
-                        <div style="
-                            width: 70px;
-                            height: 18px;
-                            background: linear-gradient(180deg, #81C784 0%, #66BB6A 100%);
-                            border-radius: 50%;
-                            position: absolute;
-                            bottom: 0;
-                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-                        "></div>
-                    </div>
-                    <div style="
-                        font-size: 2rem;
-                        font-weight: 700;
-                        color: #2E7D32;
-                        margin-top: 0.5rem;
-                    ">{i}</div>
-                </div>
-                """, unsafe_allow_html=True)
-            else:
-                st.markdown(f"""
-                <div style="
-                    background: white;
-                    border: 3px solid #E0E0E0;
-                    border-radius: 15px;
-                    padding: 1.5rem 0.8rem;
-                    text-align: center;
-                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-                    transition: all 0.3s ease;
-                    cursor: pointer;
-                ">
-                    <div style="
-                        width: 70px;
-                        height: 90px;
-                        position: relative;
-                        margin: 0 auto 1rem auto;
-                    ">
-                        <div style="
-                            width: 70px;
-                            height: 18px;
-                            background: linear-gradient(180deg, #E0E0E0 0%, #BDBDBD 100%);
-                            border-radius: 50%;
-                            position: absolute;
-                            top: 0;
-                            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-                        "></div>
-                        <div style="
-                            width: 70px;
-                            height: 72px;
-                            background: linear-gradient(90deg, #F5F5F5 0%, #EEEEEE 50%, #F5F5F5 100%);
-                            position: absolute;
-                            top: 9px;
-                            border-radius: 0 0 8px 8px;
-                            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
-                        "></div>
-                        <div style="
-                            width: 70px;
-                            height: 18px;
-                            background: linear-gradient(180deg, #BDBDBD 0%, #9E9E9E 100%);
-                            border-radius: 50%;
-                            position: absolute;
-                            bottom: 0;
-                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-                        "></div>
-                    </div>
-                    <div style="
-                        font-size: 2rem;
-                        font-weight: 700;
-                        color: #424242;
-                        margin-top: 0.5rem;
-                    ">{i}</div>
-                </div>
-                """, unsafe_allow_html=True)
-
 def page_sweet_preference():
     st.markdown("""
     <div style="text-align: center; padding: 1rem 0;">
@@ -647,22 +627,31 @@ def page_sweet_preference():
     
     st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("### 🧪 시료 선택")
-    
-    # 시각적 UI 표시
-    current_value = st.session_state.responses.get('sweet_preference', None)
-    render_sample_selection_ui(current_value, "blue")
-    
-    st.markdown("<br>", unsafe_allow_html=True)
-    
-    # 실제 선택을 위한 라디오 버튼 (라벨만 보이도록)
     st.markdown("**음료수를 마신다고 생각했을 때, 가장 선호하는 시료를 선택해주세요 ***")
+    
+    # 라디오 버튼 with 실린더 아이콘
+    current_value = st.session_state.responses.get('sweet_preference', None)
+    
+    # 커스텀 라디오 버튼 옵션 생성
+    options_html = []
+    for i in range(1, 6):
+        options_html.append(f"""
+        <div class="cylinder-icon">
+            <div class="cylinder-top"></div>
+            <div class="cylinder-body"></div>
+            <div class="cylinder-bottom"></div>
+        </div>
+        <div>{i}</div>
+        """)
+    
     sweet_preference = st.radio(
         "시료 선택",
         options=["1", "2", "3", "4", "5"],
         index=None if current_value is None else ["1", "2", "3", "4", "5"].index(current_value),
         horizontal=True,
         key="sweet_input",
-        label_visibility="collapsed"
+        label_visibility="collapsed",
+        format_func=lambda x: f"🧪 {x}"
     )
     
     st.markdown("---")
@@ -705,22 +694,19 @@ def page_salty_preference():
     
     st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("### 🧪 시료 선택")
-    
-    # 시각적 UI 표시
-    current_value = st.session_state.responses.get('salty_preference', None)
-    render_sample_selection_ui(current_value, "red")
-    
-    st.markdown("<br>", unsafe_allow_html=True)
-    
-    # 실제 선택을 위한 라디오 버튼
     st.markdown("**콩나물국을 먹는다고 생각했을 때, 가장 선호하는 시료를 선택해주세요 ***")
+    
+    # 라디오 버튼
+    current_value = st.session_state.responses.get('salty_preference', None)
+    
     salty_preference = st.radio(
         "시료 선택",
         options=["1", "2", "3", "4", "5"],
         index=None if current_value is None else ["1", "2", "3", "4", "5"].index(current_value),
         horizontal=True,
         key="salty_input",
-        label_visibility="collapsed"
+        label_visibility="collapsed",
+        format_func=lambda x: f"🧪 {x}"
     )
     
     st.markdown("---")
