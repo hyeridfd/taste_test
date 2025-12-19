@@ -253,8 +253,8 @@ def main():
         page_complete()
     
     # 진행률 표시
-    if st.session_state.page > 0 and st.session_state.page < 6:
-        progress = st.session_state.page / 6
+    if st.session_state.page > 0 and st.session_state.page < 4:
+        progress = st.session_state.page / 4
         st.sidebar.progress(progress)
         st.sidebar.markdown(f"**진행률**: {int(progress * 100)}%")
         st.sidebar.markdown(f"**현재 페이지**: {st.session_state.page}/6")
