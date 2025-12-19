@@ -83,7 +83,7 @@ st.markdown("""
     /* 메인 컨테이너 */
     .main {
         padding: 2rem;
-        max-width: 900px;
+        max-width: 1000px;
         margin: 0 auto;
     }
     
@@ -112,46 +112,49 @@ st.markdown("""
         font-size: 1.15rem;
         font-weight: 600;
         color: #2E7D32;
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
     }
     
-    /* 라디오 버튼 컨테이너 스타일 */
+    /* 라디오 버튼 컨테이너 스타일 - 너비에 맞게 조정 */
     div[data-testid="stRadio"] > div {
         background: transparent;
-        padding: 0;
+        padding: 1rem;
         display: flex;
-        justify-content: space-evenly;
-        gap: 1rem;
+        justify-content: space-between;
+        gap: 2rem;
+        max-width: 100%;
     }
     
-    /* 각 라디오 버튼 아이템 */
+    /* 각 라디오 버튼 아이템 - 크기 확대 */
     div[data-testid="stRadio"] > div > label {
         background: white;
-        border: 3px solid #E0E0E0;
-        border-radius: 15px;
-        padding: 1.5rem 1rem;
+        border: 4px solid #E0E0E0;
+        border-radius: 20px;
+        padding: 2rem 1.5rem;
         cursor: pointer;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
         display: flex;
         flex-direction: column;
         align-items: center;
-        min-width: 120px;
+        justify-content: center;
+        min-width: 140px;
+        min-height: 160px;
         flex: 1;
     }
     
     div[data-testid="stRadio"] > div > label:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        border-color: #B0B0B0;
+        transform: translateY(-8px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        border-color: #9E9E9E;
     }
     
-    /* 선택된 라디오 버튼 */
+    /* 선택된 라디오 버튼 - 더 강한 강조 효과 */
     div[data-testid="stRadio"] > div > label:has(input:checked) {
         background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
-        border: 3px solid #4CAF50;
-        box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
-        transform: translateY(-8px);
+        border: 4px solid #4CAF50;
+        box-shadow: 0 12px 35px rgba(76, 175, 80, 0.4);
+        transform: translateY(-12px) scale(1.05);
     }
     
     /* 라디오 버튼 숨기기 */
@@ -159,16 +162,18 @@ st.markdown("""
         display: none;
     }
     
-    /* 라디오 버튼 텍스트 스타일 */
+    /* 라디오 버튼 텍스트 스타일 - 크기 확대 */
     div[data-testid="stRadio"] > div > label > div {
-        font-size: 2rem;
+        font-size: 2.5rem;
         font-weight: 700;
         color: #424242;
-        margin-top: 0.5rem;
+        margin-top: 1rem;
+        line-height: 1;
     }
     
     div[data-testid="stRadio"] > div > label:has(input:checked) > div {
         color: #2E7D32;
+        font-size: 3rem;
     }
     
     /* 입력 필드 스타일 */
@@ -237,22 +242,22 @@ st.markdown("""
     /* 파란색 박스 - 단맛 */
     .blue-box {
         background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
-        padding: 1.8rem;
-        border-radius: 15px;
-        border-left: 5px solid #2196F3;
-        margin: 1.5rem 0;
-        box-shadow: 0 4px 15px rgba(33, 150, 243, 0.2);
+        padding: 2rem;
+        border-radius: 20px;
+        border-left: 6px solid #2196F3;
+        margin: 2rem 0;
+        box-shadow: 0 6px 20px rgba(33, 150, 243, 0.25);
         animation: fadeIn 0.5s ease-in;
     }
     
     /* 빨간색 박스 - 짠맛 */
     .red-box {
         background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%);
-        padding: 1.8rem;
-        border-radius: 15px;
-        border-left: 5px solid #F44336;
-        margin: 1.5rem 0;
-        box-shadow: 0 4px 15px rgba(244, 67, 54, 0.2);
+        padding: 2rem;
+        border-radius: 20px;
+        border-left: 6px solid #F44336;
+        margin: 2rem 0;
+        box-shadow: 0 6px 20px rgba(244, 67, 54, 0.25);
         animation: fadeIn 0.5s ease-in;
     }
     
@@ -403,15 +408,15 @@ st.markdown("""
     
     /* 실린더 아이콘 CSS */
     .cylinder-icon {
-        width: 70px;
-        height: 90px;
+        width: 80px;
+        height: 100px;
         position: relative;
-        margin: 0 auto 0.5rem auto;
+        margin: 0 auto 1rem auto;
     }
     
     .cylinder-top {
-        width: 70px;
-        height: 18px;
+        width: 80px;
+        height: 20px;
         background: linear-gradient(180deg, #E0E0E0 0%, #BDBDBD 100%);
         border-radius: 50%;
         position: absolute;
@@ -420,18 +425,18 @@ st.markdown("""
     }
     
     .cylinder-body {
-        width: 70px;
-        height: 72px;
+        width: 80px;
+        height: 80px;
         background: linear-gradient(90deg, #F5F5F5 0%, #EEEEEE 50%, #F5F5F5 100%);
         position: absolute;
-        top: 9px;
+        top: 10px;
         border-radius: 0 0 8px 8px;
         box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
     }
     
     .cylinder-bottom {
-        width: 70px;
-        height: 18px;
+        width: 80px;
+        height: 20px;
         background: linear-gradient(180deg, #BDBDBD 0%, #9E9E9E 100%);
         border-radius: 50%;
         position: absolute;
@@ -456,10 +461,12 @@ st.markdown("""
     @media (max-width: 768px) {
         div[data-testid="stRadio"] > div {
             flex-wrap: wrap;
+            gap: 1rem;
         }
         
         div[data-testid="stRadio"] > div > label {
-            min-width: 100px;
+            min-width: 120px;
+            min-height: 140px;
         }
     }
     </style>
@@ -614,8 +621,8 @@ def page_sweet_preference():
     
     st.markdown("""
     <div style="background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%); 
-                padding: 1.8rem; border-radius: 15px; border-left: 5px solid #2196F3; 
-                margin: 1.5rem 0; box-shadow: 0 4px 15px rgba(33, 150, 243, 0.2);">
+                padding: 2rem; border-radius: 20px; border-left: 6px solid #2196F3; 
+                margin: 2rem 0; box-shadow: 0 6px 20px rgba(33, 150, 243, 0.25);">
         <h4 style="color: #1565C0; margin-bottom: 1rem;">🔵 파란 글씨 표시된 시료</h4>
         <p style="font-size: 1.05rem; line-height: 1.8;">
             <strong>• 복숭아 음료를 마신다고 생각하면서</strong>,<br>
@@ -629,20 +636,8 @@ def page_sweet_preference():
     st.markdown("### 🧪 시료 선택")
     st.markdown("**음료수를 마신다고 생각했을 때, 가장 선호하는 시료를 선택해주세요 ***")
     
-    # 라디오 버튼 with 실린더 아이콘
+    # 라디오 버튼
     current_value = st.session_state.responses.get('sweet_preference', None)
-    
-    # 커스텀 라디오 버튼 옵션 생성
-    options_html = []
-    for i in range(1, 6):
-        options_html.append(f"""
-        <div class="cylinder-icon">
-            <div class="cylinder-top"></div>
-            <div class="cylinder-body"></div>
-            <div class="cylinder-bottom"></div>
-        </div>
-        <div>{i}</div>
-        """)
     
     sweet_preference = st.radio(
         "시료 선택",
@@ -681,8 +676,8 @@ def page_salty_preference():
     
     st.markdown("""
     <div style="background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%); 
-                padding: 1.8rem; border-radius: 15px; border-left: 5px solid #F44336; 
-                margin: 1.5rem 0; box-shadow: 0 4px 15px rgba(244, 67, 54, 0.2);">
+                padding: 2rem; border-radius: 20px; border-left: 6px solid #F44336; 
+                margin: 2rem 0; box-shadow: 0 6px 20px rgba(244, 67, 54, 0.25);">
         <h4 style="color: #C62828; margin-bottom: 1rem;">🔴 빨간 글씨 표시된 시료</h4>
         <p style="font-size: 1.05rem; line-height: 1.8;">
             <strong>• 콩나물국을 먹는다고 생각하면서</strong>,<br>
