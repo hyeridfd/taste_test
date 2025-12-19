@@ -105,16 +105,6 @@ taste_types = {
         "context": "콩나물국을 먹는다고 생각하면서",
         "samples": ["476", "375", "543", "741", "268"],
         "intensity_options": ["전혀 짜지않다", "짜지않다", "보통이다", "짜다", "매우 짜다"]
-    },
-    "신맛": {
-        "context": "레몬주스를 먹는다고 생각하면서",
-        "samples": ["596", "197", "387", "421", "265"],
-        "intensity_options": ["전혀 시지않다", "시지않다", "보통이다", "시다", "매우 시다"]
-    },
-    "매운맛": {
-        "context": "라면국물을 먹는다고 생각하면서",
-        "samples": ["284", "563", "486", "347", "167"],
-        "intensity_options": ["전혀 맵지않다", "맵지않다", "보통이다", "맵다", "매우 맵다"]
     }
 }
 
@@ -130,7 +120,7 @@ def page_intro():
     
     먼저 귀중한 시간을 내어 테스트에 참여해주셔서 진심으로 감사드립니다.
     
-    본 테스트는 **단맛, 짠맛, 신맛, 매운맛**의 민감도와 선호도를 측정하기 위해 설계되었습니다.
+    본 테스트는 **단맛, 짠맛**의 민감도와 선호도를 측정하기 위해 설계되었습니다.
     
     #### 📋 테스트 안내
     - **소요 시간**: 약 15~20분
@@ -147,8 +137,6 @@ def page_intro():
     ---
     
     **연구자**:
-    - 황희정 (hhj2831@snu.ac.kr)
-    - 유정연 (98you21@snu.ac.kr)
     - 류혜리 (fwm825@snu.ac.kr)
     """)
     
@@ -478,19 +466,14 @@ def main():
         page_taste_test("단맛", 2)
     elif st.session_state.page == 3:
         page_taste_test("짠맛", 3)
-    elif st.session_state.page == 4:
-        page_taste_test("신맛", 4)
-    elif st.session_state.page == 5:
-        page_taste_test("매운맛", 5)
-    elif st.session_state.page == 6:
         page_complete()
     
     # 진행률 표시
-    if st.session_state.page > 0 and st.session_state.page < 6:
-        progress = st.session_state.page / 6
+    if st.session_state.page > 0 and st.session_state.page < 5:
+        progress = st.session_state.page / 4
         st.sidebar.progress(progress)
         st.sidebar.markdown(f"**진행률**: {int(progress * 100)}%")
-        st.sidebar.markdown(f"**현재 페이지**: {st.session_state.page}/6")
+        st.sidebar.markdown(f"**현재 페이지**: {st.session_state.page}/4")
 
 if __name__ == "__main__":
     main()
