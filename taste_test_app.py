@@ -408,8 +408,8 @@ def page_intro():
     st.markdown("""
     ### 🌿 안녕하세요!
     
-    **'평창 웰니스 클래스'**에서 '미각 MPTI(맛 선호도 평가를 통한 나의 미각 MPTI 확인하기)' 프로그램을 기획한 
-    **서울대학교 정밀식의학연구실**입니다.
+    '평창 웰니스 클래스'에서 '미각 MPTI(맛 선호도 평가를 통한 나의 미각 MPTI 확인하기)' 프로그램을 기획한 
+    **서울대학교 정밀푸드솔루션연구실**입니다.
     
     먼저 귀중한 시간을 내어 테스트에 참여해주셔서 진심으로 감사드립니다. 🙏
     
@@ -967,7 +967,7 @@ def main():
         st.markdown("""
         <div style="font-size: 0.85rem; color: #757575; padding: 1rem 0;">
             <p><strong>연구기관</strong></p>
-            <p>서울대학교<br>정밀식의학연구실</p>
+            <p>서울대학교<br>정밀푸드솔루션연구실</p>
             <br>
             <p><strong>문의</strong></p>
             <p>fwm825@snu.ac.kr<br>98you21@snu.ac.kr</p>
