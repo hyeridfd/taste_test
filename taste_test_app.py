@@ -37,6 +37,7 @@ def insert_taste_response(response_data: dict):
     row = {
         "이메일": response_data.get("email", ""),
         "성명": response_data.get("name", ""),
+        "소속": response_data.get("organization", ""),
         "성별": response_data.get("gender", ""),
         "나이": response_data.get("age", 0),
         "신장": response_data.get("height", 0),
@@ -761,6 +762,9 @@ def page_basic_info():
     # 성명
     name = st.text_input("👤 성명 *", value=st.session_state.responses.get('name', ''), placeholder="홍길동", key="name_input")
     
+    # 소속
+    organization = st.text_input("🏢 소속 *", value=st.session_state.responses.get('organization', ''), placeholder="예: 서울대학교, 평창군청, 개인 등", key="organization_input")
+    
     # 성별
     st.markdown("#### ⚥ 성별 *")
     gender = st.radio("성별 선택", ["남", "여"], 
@@ -803,8 +807,9 @@ def page_basic_info():
     
     with col2:
         if st.button("다음 단계로 →", type="primary", use_container_width=True, key="next_basic"):
-            if name:
+            if name and organization:
                 st.session_state.responses['name'] = name
+                st.session_state.responses['organization'] = organization
                 st.session_state.responses['gender'] = gender
                 st.session_state.responses['age'] = age
                 st.session_state.responses['height'] = height
@@ -817,7 +822,8 @@ def page_basic_info():
 def page_sweet_preference():
     st.markdown("""
     <div style="text-align: center; padding: 1rem 0;">
-        <h1>🍫 단맛 선호도 조사</h1>
+        <h1>🍑 단맛 선호도 조사</h1>
+        <p style="color: #6B9AB8; font-size: 1.1rem;">복숭아 음료 테스트</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -827,15 +833,16 @@ def page_sweet_preference():
                 margin: 2rem 0; box-shadow: 0 4px 12px rgba(107, 154, 184, 0.15);">
         <h4 style="color: #4A7899; margin-bottom: 1rem;">🔵 파란 글씨 표시된 시료</h4>
         <p style="font-size: 1.05rem; line-height: 1.8; color: #4A4A4A;">
-            <strong>복숭아 음료를 마신다고 생각하면서</strong>,
-            시료 순서대로 <strong>(1 → 2 → 3 → 4 → 5)</strong> 맛을 보고
-            <strong style="color: #4A7899;">가장 높은 선호도의 시료 하나만 체크</strong>해주세요
+            <strong>• 복숭아 음료를 마신다고 생각하면서</strong>,<br>
+            시료 순서대로 <strong>(1 → 2 → 3 → 4 → 5)</strong> 맛을 보고<br>
+            <strong style="color: #4A7899;">가장 높은 선호도의 시료를 하나만 체크</strong>해주세요 ✓
         </p>
     </div>
     """, unsafe_allow_html=True)
     
     st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("### 🧪 시료 선택")
+    st.markdown("**음료수를 마신다고 생각했을 때, 가장 선호하는 시료를 선택해주세요 ***")
     
     # 현재 선택된 값
     current_value = st.session_state.responses.get('sweet_preference', None)
@@ -902,7 +909,8 @@ def page_sweet_preference():
 def page_salty_preference():
     st.markdown("""
     <div style="text-align: center; padding: 1rem 0;">
-        <h1>🧂 짠맛 선호도 조사</h1>
+        <h1>🥣 짠맛 선호도 조사</h1>
+        <p style="color: #C89B8C; font-size: 1.1rem;">콩나물국 테스트</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -912,15 +920,16 @@ def page_salty_preference():
                 margin: 2rem 0; box-shadow: 0 4px 12px rgba(200, 155, 140, 0.15);">
         <h4 style="color: #A67C6D; margin-bottom: 1rem;">🔴 빨간 글씨 표시된 시료</h4>
         <p style="font-size: 1.05rem; line-height: 1.8; color: #4A4A4A;">
-            <strong>콩나물국을 먹는다고 생각하면서</strong>,
-            시료 순서대로 <strong>(1 → 2 → 3 → 4 → 5)</strong> 맛을 보고
-            <strong style="color: #A67C6D;">가장 높은 선호도의 시료를 하나만 체크</strong>해주세요
+            <strong>• 콩나물국을 먹는다고 생각하면서</strong>,<br>
+            시료 순서대로 <strong>(1 → 2 → 3 → 4 → 5)</strong> 맛을 보고<br>
+            <strong style="color: #A67C6D;">가장 높은 선호도의 시료를 하나만 체크</strong>해주세요 ✓
         </p>
     </div>
     """, unsafe_allow_html=True)
     
     st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("### 🧪 시료 선택")
+    st.markdown("**콩나물국을 먹는다고 생각했을 때, 가장 선호하는 시료를 선택해주세요 ***")
     
     # 현재 선택된 값
     current_value = st.session_state.responses.get('salty_preference', None)
@@ -1040,6 +1049,7 @@ def page_complete():
         with col1:
             st.markdown(f"""
             - **👤 이름**: {st.session_state.responses.get('name', '-')}
+            - **🏢 소속**: {st.session_state.responses.get('organization', '-')}
             - **📧 이메일**: {st.session_state.responses.get('email', '-')}
             - **🎂 나이**: {st.session_state.responses.get('age', '-')}세
             - **⚥ 성별**: {st.session_state.responses.get('gender', '-')}
@@ -1060,12 +1070,12 @@ def page_complete():
         
         <div style="display: flex; justify-content: space-around; margin: 2rem 0;">
             <div style="text-align: center; padding: 1.5rem; background: #EEF5F9; border-radius: 12px; flex: 1; margin: 0 1rem; border: 1px solid #D1E3EC;">
-                <div style="font-size: 2.5rem;">🍫</div>
+                <div style="font-size: 2.5rem;">🍑</div>
                 <div style="font-size: 1.5rem; font-weight: 700; color: #4A7899; margin: 0.5rem 0;">시료 {st.session_state.responses.get('sweet_preference', '-')}</div>
                 <div style="color: #6B9AB8;">단맛 선호</div>
             </div>
             <div style="text-align: center; padding: 1.5rem; background: #FDF6F4; border-radius: 12px; flex: 1; margin: 0 1rem; border: 1px solid #E8D5CF;">
-                <div style="font-size: 2.5rem;">🧂</div>
+                <div style="font-size: 2.5rem;">🥣</div>
                 <div style="font-size: 1.5rem; font-weight: 700; color: #A67C6D; margin: 0.5rem 0;">시료 {st.session_state.responses.get('salty_preference', '-')}</div>
                 <div style="color: #C89B8C;">짠맛 선호</div>
             </div>
@@ -1185,11 +1195,139 @@ def admin_page():
         
         st.markdown("<br><br>", unsafe_allow_html=True)
         
+        # 소속별 시각화
+        if '소속' in df_db.columns:
+            st.markdown("### 📊 소속별 응답 분석")
+            
+            # 소속별 집계
+            org_counts = df_db['소속'].value_counts()
+            
+            if len(org_counts) > 0:
+                col1, col2 = st.columns(2)
+                
+                with col1:
+                    st.markdown("#### 🏢 소속별 응답 수")
+                    # 막대 그래프
+                    st.bar_chart(org_counts)
+                
+                with col2:
+                    st.markdown("#### 🥧 소속 분포")
+                    # 파이 차트 데이터 준비
+                    import plotly.graph_objects as go
+                    
+                    fig = go.Figure(data=[go.Pie(
+                        labels=org_counts.index.tolist(),
+                        values=org_counts.values.tolist(),
+                        hole=0.3,
+                        marker=dict(colors=['#7BA088', '#6B9AB8', '#C89B8C', '#D4A574', '#A5D6A7', '#81C784', '#66BB6A', '#4DB6AC', '#26A69A'])
+                    )])
+                    
+                    fig.update_layout(
+                        showlegend=True,
+                        height=400,
+                        margin=dict(t=20, b=20, l=20, r=20),
+                        paper_bgcolor='rgba(0,0,0,0)',
+                        plot_bgcolor='rgba(0,0,0,0)'
+                    )
+                    
+                    st.plotly_chart(fig, use_container_width=True)
+                
+                st.markdown("<br>", unsafe_allow_html=True)
+                
+                # 소속별 단맛/짠맛 선호도 분석
+                if '단맛선호' in df_db.columns and '짠맛선호' in df_db.columns:
+                    st.markdown("#### 🍽️ 소속별 시료 선호도")
+                    
+                    col1, col2 = st.columns(2)
+                    
+                    with col1:
+                        st.markdown("**단맛 선호 (소속별)**")
+                        sweet_by_org = df_db.groupby(['소속', '단맛선호']).size().unstack(fill_value=0)
+                        st.dataframe(sweet_by_org, use_container_width=True)
+                    
+                    with col2:
+                        st.markdown("**짠맛 선호 (소속별)**")
+                        salty_by_org = df_db.groupby(['소속', '짠맛선호']).size().unstack(fill_value=0)
+                        st.dataframe(salty_by_org, use_container_width=True)
+                    
+                    # 시료별 선호도 히트맵
+                    st.markdown("<br>", unsafe_allow_html=True)
+                    
+                    tab1, tab2 = st.tabs(["🍫 단맛 선호도 분포", "🧂 짠맛 선호도 분포"])
+                    
+                    with tab1:
+                        # 단맛 선호도 시각화
+                        fig_sweet = go.Figure(data=[go.Bar(
+                            x=['시료 1', '시료 2', '시료 3', '시료 4', '시료 5'],
+                            y=[
+                                len(df_db[df_db['단맛선호'] == '1']),
+                                len(df_db[df_db['단맛선호'] == '2']),
+                                len(df_db[df_db['단맛선호'] == '3']),
+                                len(df_db[df_db['단맛선호'] == '4']),
+                                len(df_db[df_db['단맛선호'] == '5'])
+                            ],
+                            marker=dict(color='#6B9AB8'),
+                            text=[
+                                len(df_db[df_db['단맛선호'] == '1']),
+                                len(df_db[df_db['단맛선호'] == '2']),
+                                len(df_db[df_db['단맛선호'] == '3']),
+                                len(df_db[df_db['단맛선호'] == '4']),
+                                len(df_db[df_db['단맛선호'] == '5'])
+                            ],
+                            textposition='auto'
+                        )])
+                        
+                        fig_sweet.update_layout(
+                            title="단맛 시료별 선호도",
+                            xaxis_title="시료 번호",
+                            yaxis_title="응답 수",
+                            height=400,
+                            paper_bgcolor='rgba(0,0,0,0)',
+                            plot_bgcolor='rgba(0,0,0,0)'
+                        )
+                        
+                        st.plotly_chart(fig_sweet, use_container_width=True)
+                    
+                    with tab2:
+                        # 짠맛 선호도 시각화
+                        fig_salty = go.Figure(data=[go.Bar(
+                            x=['시료 1', '시료 2', '시료 3', '시료 4', '시료 5'],
+                            y=[
+                                len(df_db[df_db['짠맛선호'] == '1']),
+                                len(df_db[df_db['짠맛선호'] == '2']),
+                                len(df_db[df_db['짠맛선호'] == '3']),
+                                len(df_db[df_db['짠맛선호'] == '4']),
+                                len(df_db[df_db['짠맛선호'] == '5'])
+                            ],
+                            marker=dict(color='#C89B8C'),
+                            text=[
+                                len(df_db[df_db['짠맛선호'] == '1']),
+                                len(df_db[df_db['짠맛선호'] == '2']),
+                                len(df_db[df_db['짠맛선호'] == '3']),
+                                len(df_db[df_db['짠맛선호'] == '4']),
+                                len(df_db[df_db['짠맛선호'] == '5'])
+                            ],
+                            textposition='auto'
+                        )])
+                        
+                        fig_salty.update_layout(
+                            title="짠맛 시료별 선호도",
+                            xaxis_title="시료 번호",
+                            yaxis_title="응답 수",
+                            height=400,
+                            paper_bgcolor='rgba(0,0,0,0)',
+                            plot_bgcolor='rgba(0,0,0,0)'
+                        )
+                        
+                        st.plotly_chart(fig_salty, use_container_width=True)
+        
+        st.markdown("<br><br>", unsafe_allow_html=True)
+        
         # 응답 목록
         st.markdown("### 📊 응답 기록")
         
         # 표시할 컬럼 선택
-        display_cols = ["성명", "이메일", "성별", "나이", "신장", "체중", "단맛선호", "짠맛선호", "제출시간"]
+        display_cols = ["성명", "소속", "이메일", "성별", "나이", "신장", "체중", "단맛선호", "짠맛선호", "제출시간"]
         available_cols = [col for col in display_cols if col in df_db.columns]
         
         st.dataframe(df_db[available_cols], use_container_width=True, height=400)
@@ -1236,6 +1374,7 @@ def admin_page():
                 with col1:
                     st.markdown(f"""
                     - **👤 성명**: {selected_row.get('성명', '-')}
+                    - **🏢 소속**: {selected_row.get('소속', '-')}
                     - **📧 이메일**: {selected_row.get('이메일', '-')}
                     - **⚥ 성별**: {selected_row.get('성별', '-')}
                     - **🎂 나이**: {selected_row.get('나이', '-')}세
@@ -1253,8 +1392,8 @@ def admin_page():
                 
                 st.markdown(f"""
                 #### 🍽️ 미각 선호도
-                - **🍑 단맛 선호**: 시료 {selected_row.get('단맛선호', '-')}
-                - **🥣 짠맛 선호**: 시료 {selected_row.get('짠맛선호', '-')}
+                - **🍫 단맛 선호**: 시료 {selected_row.get('단맛선호', '-')}
+                - **🧂 짠맛 선호**: 시료 {selected_row.get('짠맛선호', '-')}
                 """)
                 
                 st.markdown('</div>', unsafe_allow_html=True)
