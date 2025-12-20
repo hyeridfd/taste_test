@@ -836,8 +836,6 @@ def page_sweet_preference():
     
     st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("### 🧪 시료 선택")
-    st.markdown("음료수를 마신다고 생각했을 때,<br>
-    가장 선호하는 시료를 선택해주세요")
     
     # 현재 선택된 값
     current_value = st.session_state.responses.get('sweet_preference', None)
@@ -923,7 +921,6 @@ def page_salty_preference():
     
     st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("### 🧪 시료 선택")
-    st.markdown("콩나물국을 먹는다고 생각했을 때, 가장 선호하는 시료를 선택해주세요")
     
     # 현재 선택된 값
     current_value = st.session_state.responses.get('salty_preference', None)
