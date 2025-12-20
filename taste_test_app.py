@@ -861,4 +861,228 @@ def admin_login():
         if st.button("🚪 로그인", type="primary", use_container_width=True):
             if password == ADMIN_PASSWORD:
                 st.session_state.admin_authenticated = True
-                st.re
+                st.rerun()
+            else:
+                st.error("❌ 비밀번호가 올바르지 않습니다.")
+    
+    with col2:
+        if st.button("↩️ 취소", use_container_width=True):
+            st.session_state.admin_mode = False
+            st.rerun()
+
+def admin_page():
+    """관리자 페이지"""
+    st.markdown("""
+    <div style="background: #5D8A6F; color: white; padding: 2rem; border-radius: 16px; text-align: center; margin-bottom: 2rem; box-shadow: 0 6px 20px rgba(46, 89, 69, 0.2);">
+        <h1 style="color: white;">🔧 관리자 대시보드</h1>
+        <p style="font-size: 1.1rem; margin-top: 0.5rem;">미각 MPTI 응답 관리 시스템</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # 로그아웃 버튼
+    col1, col2, col3 = st.columns([4, 1, 1])
+    with col3:
+        if st.button("🚪 로그아웃"):
+            st.session_state.admin_authenticated = False
+            st.rerun()
+    
+    sb = get_supabase()
+    df_db = fetch_taste_responses_df() if sb else pd.DataFrame()
+    
+    if not df_db.empty:
+        # 통계 카드
+        col1, col2, col3, col4 = st.columns(4)
+        
+        with col1:
+            st.markdown(f"""
+            <div class="stat-card">
+                <div class="stat-number">{len(df_db)}</div>
+                <div class="stat-label">📊 총 응답 수</div>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col2:
+            unique_users = df_db['이메일'].nunique() if '이메일' in df_db.columns else 0
+            st.markdown(f"""
+            <div class="stat-card">
+                <div class="stat-number">{unique_users}</div>
+                <div class="stat-label">👥 참여자 수</div>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col3:
+            avg_age = int(df_db['나이'].mean()) if '나이' in df_db.columns else 0
+            st.markdown(f"""
+            <div class="stat-card">
+                <div class="stat-number">{avg_age}세</div>
+                <div class="stat-label">🎂 평균 나이</div>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col4:
+            today_str = datetime.now().strftime('%Y-%m-%d')
+            today_count = df_db["제출시간"].astype(str).str.contains(today_str).sum() if "제출시간" in df_db.columns else 0
+            st.markdown(f"""
+            <div class="stat-card">
+                <div class="stat-number">{today_count}</div>
+                <div class="stat-label">📅 오늘 응답</div>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        st.markdown("<br><br>", unsafe_allow_html=True)
+        
+        # 응답 목록
+        st.markdown("### 📊 응답 기록")
+        
+        # 표시할 컬럼 선택
+        display_cols = ["성명", "이메일", "성별", "나이", "신장", "체중", "단맛선호", "짠맛선호", "제출시간"]
+        available_cols = [col for col in display_cols if col in df_db.columns]
+        
+        st.dataframe(df_db[available_cols], use_container_width=True, height=400)
+        
+        # CSV 다운로드
+        csv = df_db.to_csv(index=False, encoding='utf-8-sig')
+        st.download_button(
+            label="📥 전체 데이터 CSV 다운로드",
+            data=csv,
+            file_name=f"미각MPTI_전체응답_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
+            mime="text/csv",
+            use_container_width=True
+        )
+        
+        # 개별 응답 상세보기
+        st.markdown("### 🔍 개별 응답 상세보기")
+        
+        if '성명' in df_db.columns and '이메일' in df_db.columns:
+            selected_option = st.selectbox(
+                "참여자 선택",
+                options=df_db.apply(lambda x: f"{x['성명']} ({x['이메일']})", axis=1).tolist(),
+                key="admin_select"
+            )
+            
+            if selected_option:
+                selected_idx = df_db.apply(lambda x: f"{x['성명']} ({x['이메일']})", axis=1).tolist().index(selected_option)
+                selected_row = df_db.iloc[selected_idx]
+                
+                # BMI 계산
+                if '신장' in selected_row and '체중' in selected_row:
+                    height_m = selected_row['신장'] / 100
+                    bmi = selected_row['체중'] / (height_m ** 2)
+                else:
+                    bmi = 0
+                
+                st.markdown("""
+                <div style="background: #F0F7F4; 
+                            padding: 2rem; border-radius: 12px; border-left: 5px solid #5D8A6F; 
+                            margin: 1.5rem 0; box-shadow: 0 3px 10px rgba(93, 138, 111, 0.12);">
+                """, unsafe_allow_html=True)
+                
+                col1, col2 = st.columns(2)
+                
+                with col1:
+                    st.markdown(f"""
+                    - **👤 성명**: {selected_row.get('성명', '-')}
+                    - **📧 이메일**: {selected_row.get('이메일', '-')}
+                    - **⚥ 성별**: {selected_row.get('성별', '-')}
+                    - **🎂 나이**: {selected_row.get('나이', '-')}세
+                    """)
+                
+                with col2:
+                    st.markdown(f"""
+                    - **📏 신장**: {selected_row.get('신장', '-')}cm
+                    - **⚖️ 체중**: {selected_row.get('체중', '-')}kg
+                    - **📊 BMI**: {bmi:.1f}
+                    - **📅 제출시간**: {selected_row.get('제출시간', '-')}
+                    """)
+                
+                st.markdown("---")
+                
+                st.markdown(f"""
+                #### 🍽️ 미각 선호도
+                - **🍑 단맛 선호**: 시료 {selected_row.get('단맛선호', '-')}
+                - **🥣 짠맛 선호**: 시료 {selected_row.get('짠맛선호', '-')}
+                """)
+                
+                st.markdown('</div>', unsafe_allow_html=True)
+                
+                # 상세 응답 데이터 표시
+                if '응답데이터' in selected_row and selected_row['응답데이터']:
+                    try:
+                        response_detail = json.loads(selected_row['응답데이터'])
+                        with st.expander("📝 상세 응답 데이터 (JSON)"):
+                            st.json(response_detail)
+                    except:
+                        st.warning("⚠️ 응답 데이터를 불러올 수 없습니다.")
+    
+    else:
+        st.info("📝 아직 제출된 응답이 없습니다.")
+
+# 메인 로직
+def main():
+    # 사이드바
+    with st.sidebar:
+        st.markdown("""
+        <div style="text-align: center; padding: 1rem 0;">
+            <h2 style="color: #2E5945;">🌿 평창 웰니스</h2>
+            <p style="color: #5D8A6F;">미각 MPTI</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("---")
+        
+        admin_mode = st.checkbox("🔧 관리자 모드", value=st.session_state.get('admin_mode', False), key='admin_mode')
+        
+        # 진행률 표시
+        if not admin_mode and st.session_state.page > 0 and st.session_state.page < 4:
+            st.markdown("### 📊 진행 상황")
+            progress = st.session_state.page / 4
+            st.progress(progress)
+            st.markdown(f"**{int(progress * 100)}%** 완료")
+            st.markdown(f"**{st.session_state.page}** / 4 단계")
+            
+            # 단계 표시
+            steps = ["기본정보", "단맛", "짠맛", "완료"]
+            for i, step in enumerate(steps, 1):
+                if i < st.session_state.page:
+                    st.markdown(f"✅ {step}")
+                elif i == st.session_state.page:
+                    st.markdown(f"🔵 **{step}**")
+                else:
+                    st.markdown(f"⚪ {step}")
+        
+        st.markdown("---")
+        
+        st.markdown("""
+        <div style="font-size: 0.85rem; color: #6B7B6A; padding: 1rem 0;">
+            <p><strong>연구기관</strong></p>
+            <p>서울대학교<br>정밀푸드솔루션연구실</p>
+            <br>
+            <p><strong>문의</strong></p>
+            <p>fwm825@snu.ac.kr<br>98you21@snu.ac.kr</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # 메인 컨텐츠
+    if admin_mode:
+        # 관리자 인증 확인
+        if not st.session_state.admin_authenticated:
+            admin_login()
+            return
+        else:
+            admin_page()
+            return
+    
+    # 일반 사용자 페이지
+    if st.session_state.page == 0:
+        page_intro()
+    elif st.session_state.page == 1:
+        page_basic_info()
+    elif st.session_state.page == 2:
+        page_sweet_preference()
+    elif st.session_state.page == 3:
+        page_salty_preference()
+    elif st.session_state.page == 4:
+        page_complete()
+
+if __name__ == "__main__":
+    main()
