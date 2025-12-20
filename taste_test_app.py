@@ -85,7 +85,6 @@ st.markdown("""
         background-attachment: fixed;
     }
 
-    
     /* 메인 컨테이너 */
     .main {
         padding: 2rem;
