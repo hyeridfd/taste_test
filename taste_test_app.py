@@ -8,6 +8,7 @@ import os
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import matplotlib.font_manager as fm
+import koreanize_matplotlib
 
 def set_korean_font():
     # 1) 프로젝트에 포함한 폰트 우선
