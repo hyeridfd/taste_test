@@ -688,7 +688,6 @@ def page_sweet_preference():
     st.markdown("""
     <div style="text-align: center; padding: 1rem 0;">
         <h1>🍑 단맛 선호도 조사</h1>
-        <p style="color: #6B9AB8; font-size: 1.1rem;">복숭아 음료 테스트</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -742,7 +741,6 @@ def page_salty_preference():
     st.markdown("""
     <div style="text-align: center; padding: 1rem 0;">
         <h1>🥣 짠맛 선호도 조사</h1>
-        <p style="color: #C89B8C; font-size: 1.1rem;">콩나물국 테스트</p>
     </div>
     """, unsafe_allow_html=True)
     
