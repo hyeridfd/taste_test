@@ -65,78 +65,168 @@ st.set_page_config(
     layout="wide"
 )
 
-# CSS 스타일링 - 개선된 디자인
+# CSS 스타일링 - 웰니스 & 자연 테마 + 실린더 디자인
 st.markdown("""
     <style>
-    /* 전체 배경 - 파스텔 그라데이션 */
+    /* 전체 배경 - 부드러운 아이보리/베이지 */
     .stApp {
-        background: linear-gradient(180deg, 
-            #E8F5E9 0%,
-            #B2DFDB 25%,
-            #FFE0B2 50%,
-            #F8BBD0 75%,
-            #E1BEE7 100%
-        );
-        background-attachment: fixed;
+        background-color: #F5F3EF;
     }
     
     /* 메인 컨테이너 */
     .main {
         padding: 2rem;
-        max-width: 900px;
+        max-width: 1000px;
         margin: 0 auto;
     }
     
-    /* 메인 블록 컨테이너 숨기기 */
+    /* 메인 블록 컨테이너 */
     .main .block-container {
         padding-top: 2rem;
         padding-bottom: 2rem;
     }
     
-    /* 카드 스타일 */
-    # .card {
-    #     background: rgba(255, 255, 255, 0.95);
-    #     padding: 2.5rem;
-    #     border-radius: 25px;
-    #     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-    #     margin: 2rem 0;
-    #     backdrop-filter: blur(10px);
-    # }
-    
     /* 헤더 스타일 */
     h1 {
-        color: #2E7D32;
+        color: #2E5945;
         font-weight: 700;
         text-align: center;
         margin-bottom: 1.5rem;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
     }
     
     h2, h3 {
-        color: #388E3C;
+        color: #3D6B54;
         font-weight: 600;
     }
     
-    /* 라디오 버튼 스타일 */
-    .stRadio > label {
+    /* 라디오 버튼 라벨 스타일 */
+    div[data-testid="stRadio"] > label {
         font-size: 1.15rem;
         font-weight: 600;
-        color: #2E7D32;
-        margin-bottom: 1rem;
+        color: #2E5945;
+        margin-bottom: 1.5rem;
     }
     
-    .stRadio > div {
-        background: rgba(255, 255, 255, 0.7);
+    /* 라디오 버튼 컨테이너 - 연한 연두색 배경 */
+    div[data-testid="stRadio"] > div {
+        background: #E8F5E3;
+        padding: 2.5rem 1.5rem;
+        border-radius: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        max-width: 100%;
+        flex-wrap: wrap;
+        box-shadow: 0 4px 12px rgba(93, 138, 111, 0.1);
+    }
+    
+    /* 각 시료 선택 카드 - 실린더 디자인 */
+    div[data-testid="stRadio"] > div > label {
+        background: transparent;
+        border: none;
         padding: 1rem;
-        border-radius: 15px;
-        margin-top: 0.5rem;
+        cursor: pointer;
+        transition: all 0.35s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        min-width: 120px;
+        min-height: 200px;
+        position: relative;
+    }
+    
+    /* 호버 효과 */
+    div[data-testid="stRadio"] > div > label:hover {
+        transform: translateY(-8px);
+    }
+    
+    /* 선택된 카드 */
+    div[data-testid="stRadio"] > div > label:has(input:checked) {
+        transform: translateY(-12px) scale(1.05);
+    }
+    
+    /* 라디오 버튼 숨기기 */
+    div[data-testid="stRadio"] input[type="radio"] {
+        display: none;
+    }
+    
+    /* 실린더 컨테이너 */
+    div[data-testid="stRadio"] > div > label::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90px;
+        height: 120px;
+        background: 
+            radial-gradient(ellipse at top, #E0E0E0 0%, #BDBDBD 100%) top / 100% 25px no-repeat,
+            linear-gradient(90deg, #F5F5F5 0%, #EEEEEE 50%, #F5F5F5 100%) 0 12px / 100% calc(100% - 37px) no-repeat,
+            radial-gradient(ellipse at bottom, #BDBDBD 0%, #9E9E9E 100%) bottom / 100% 25px no-repeat;
+        border-radius: 0;
+        box-shadow: 
+            0 2px 5px rgba(0, 0, 0, 0.15) inset,
+            0 6px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.35s ease;
+        z-index: 0;
+    }
+    
+    /* 호버 시 실린더 */
+    div[data-testid="stRadio"] > div > label:hover::before {
+        box-shadow: 
+            0 2px 5px rgba(0, 0, 0, 0.15) inset,
+            0 8px 20px rgba(0, 0, 0, 0.25);
+    }
+    
+    /* 선택된 실린더 - 초록색 */
+    div[data-testid="stRadio"] > div > label:has(input:checked)::before {
+        background: 
+            radial-gradient(ellipse at top, #A5D6A7 0%, #81C784 100%) top / 100% 25px no-repeat,
+            linear-gradient(90deg, #C8E6C9 0%, #A5D6A7 50%, #C8E6C9 100%) 0 12px / 100% calc(100% - 37px) no-repeat,
+            radial-gradient(ellipse at bottom, #81C784 0%, #66BB6A 100%) bottom / 100% 25px no-repeat;
+        box-shadow: 
+            0 2px 5px rgba(76, 175, 80, 0.3) inset,
+            0 10px 25px rgba(76, 175, 80, 0.4);
+    }
+    
+    /* 시료 번호 스타일 */
+    div[data-testid="stRadio"] > div > label > div {
+        font-size: 3.2rem;
+        font-weight: 800;
+        color: #757575;
+        margin-top: 130px;
+        line-height: 1;
+        position: relative;
+        z-index: 1;
+        transition: all 0.35s ease;
+        font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', Arial, sans-serif;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    div[data-testid="stRadio"] > div > label:hover > div {
+        color: #616161;
+        transform: scale(1.08);
+    }
+    
+    div[data-testid="stRadio"] > div > label:has(input:checked) > div {
+        color: #2E5945;
+        font-size: 3.6rem;
+        text-shadow: 3px 3px 6px rgba(46, 89, 69, 0.2);
+        animation: gentlePulse 0.5s ease-in-out;
+    }
+    
+    /* 부드러운 펄스 애니메이션 */
+    @keyframes gentlePulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
     }
     
     /* 입력 필드 스타일 */
     .stTextInput > div > div > input,
     .stNumberInput > div > div > input {
         border-radius: 12px;
-        border: 2px solid #B2DFDB;
+        border: 2px solid #D4CFC4;
         padding: 0.75rem;
         font-size: 1rem;
         transition: all 0.3s ease;
@@ -145,125 +235,117 @@ st.markdown("""
     
     .stTextInput > div > div > input:focus,
     .stNumberInput > div > div > input:focus {
-        border-color: #4DB6AC;
-        box-shadow: 0 0 0 3px rgba(77, 182, 172, 0.1);
+        border-color: #5D8A6F;
+        box-shadow: 0 0 0 3px rgba(93, 138, 111, 0.1);
     }
     
     /* 라벨 스타일 */
     .stTextInput > label,
     .stNumberInput > label {
         font-weight: 600;
-        color: #2E7D32;
+        color: #2E5945;
         font-size: 1.05rem;
     }
     
     /* 버튼 스타일 */
     .stButton > button {
-        border-radius: 15px;
+        border-radius: 12px;
         padding: 0.75rem 2rem;
         font-weight: 600;
         font-size: 1.05rem;
         transition: all 0.3s ease;
         border: none;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
     }
     
     .stButton > button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
     }
     
     /* Primary 버튼 */
     .stButton > button[kind="primary"] {
-        background: linear-gradient(135deg, #66BB6A 0%, #43A047 100%);
+        background: #5D8A6F;
         color: white;
+    }
+    
+    .stButton > button[kind="primary"]:hover {
+        background: #4A7159;
     }
     
     /* Secondary 버튼 */
     .stButton > button[kind="secondary"] {
-        background: linear-gradient(135deg, #81C784 0%, #66BB6A 100%);
+        background: #7BA088;
         color: white;
     }
     
     /* 섹션 헤더 */
     .section-header {
-        background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+        background: #F0F7F4;
         padding: 1.5rem;
-        border-radius: 15px;
+        border-radius: 12px;
         margin: 2rem 0 1.5rem 0;
-        border-left: 5px solid #4CAF50;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        border-left: 5px solid #5D8A6F;
+        box-shadow: 0 3px 10px rgba(46, 89, 69, 0.08);
     }
     
-    # /* 안내 박스 - 노란색 */
-    # .instruction-box {
-    #     background: linear-gradient(135deg, #FFF9C4 0%, #FFF59D 100%);
-    #     padding: 1.5rem;
-    #     border-radius: 15px;
-    #     border-left: 5px solid #FBC02D;
-    #     margin: 1.5rem 0;
-    #     box-shadow: 0 4px 15px rgba(251, 192, 45, 0.2);
-    #     animation: fadeIn 0.5s ease-in;
-    # }
-    
-    /* 파란색 박스 - 단맛 */
+    /* 파란색 박스 - 단맛 (차분한 블루) */
     .blue-box {
-        background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
-        padding: 1.8em;
-        border-radius: 15px;
-        border-left: 5px solid #2196F3;
-        margin: 1.5rem 0;
-        box-shadow: 0 4px 15px rgba(33, 150, 243, 0.2);
+        background: #EEF5F9;
+        padding: 2rem;
+        border-radius: 16px;
+        border-left: 6px solid #6B9AB8;
+        margin: 2rem 0;
+        box-shadow: 0 4px 12px rgba(107, 154, 184, 0.15);
         animation: fadeIn 0.5s ease-in;
     }
     
-    /* 빨간색 박스 - 짠맛 */
+    /* 빨간색 박스 - 짠맛 (차분한 산호빛) */
     .red-box {
-        background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%);
-        padding: 1.8rem;
-        border-radius: 15px;
-        border-left: 5px solid #F44336;
-        margin: 1.5rem 0;
-        box-shadow: 0 4px 15px rgba(244, 67, 54, 0.2);
+        background: #FDF6F4;
+        padding: 2rem;
+        border-radius: 16px;
+        border-left: 6px solid #C89B8C;
+        margin: 2rem 0;
+        box-shadow: 0 4px 12px rgba(200, 155, 140, 0.15);
         animation: fadeIn 0.5s ease-in;
     }
     
     /* 초록색 박스 - 완료 */
     .green-box {
-        background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+        background: #F0F7F4;
         padding: 2rem;
-        border-radius: 15px;
-        border-left: 5px solid #4CAF50;
+        border-radius: 12px;
+        border-left: 5px solid #5D8A6F;
         margin: 1.5rem 0;
-        box-shadow: 0 4px 15px rgba(76, 175, 80, 0.2);
+        box-shadow: 0 3px 10px rgba(93, 138, 111, 0.12);
     }
     
     /* 통계 카드 */
     .stat-card {
         background: white;
         padding: 2rem;
-        border-radius: 20px;
+        border-radius: 16px;
         text-align: center;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 12px rgba(46, 89, 69, 0.1);
         transition: transform 0.3s ease;
+        border: 1px solid #E8E5DF;
     }
     
     .stat-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 6px 18px rgba(46, 89, 69, 0.15);
     }
     
     .stat-number {
         font-size: 2.5rem;
         font-weight: 700;
-        background: linear-gradient(135deg, #66BB6A 0%, #43A047 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: #5D8A6F;
         margin-bottom: 0.5rem;
     }
     
     .stat-label {
-        color: #757575;
+        color: #6B7B6A;
         font-size: 0.95rem;
         font-weight: 500;
     }
@@ -282,13 +364,13 @@ st.markdown("""
     
     /* 프로그레스 바 */
     .stProgress > div > div > div {
-        background: linear-gradient(90deg, #66BB6A 0%, #43A047 100%);
+        background: #5D8A6F;
         border-radius: 10px;
     }
     
     /* 사이드바 스타일 */
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #E8F5E9 0%, #C8E6C9 100%);
+        background: #F0F7F4;
     }
     
     /* 데이터프레임 스타일 */
@@ -300,12 +382,12 @@ st.markdown("""
     /* 선택 박스 */
     .stSelectbox > div > div {
         border-radius: 12px;
-        border: 2px solid #B2DFDB;
+        border: 2px solid #D4CFC4;
     }
     
     /* 다운로드 버튼 */
     .stDownloadButton > button {
-        background: linear-gradient(135deg, #42A5F5 0%, #1E88E5 100%);
+        background: #6B9AB8;
         color: white;
         border-radius: 12px;
         padding: 0.75rem 1.5rem;
@@ -323,42 +405,38 @@ st.markdown("""
     hr {
         margin: 2rem 0;
         border: none;
-        height: 2px;
-        background: linear-gradient(90deg, 
-            transparent 0%, 
-            #C8E6C9 50%, 
-            transparent 100%
-        );
+        height: 1px;
+        background: #D4CFC4;
     }
     
     /* 성공 메시지 */
     .stSuccess {
-        background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
-        border-left: 5px solid #4CAF50;
+        background: #F0F7F4;
+        border-left: 5px solid #5D8A6F;
         border-radius: 10px;
         padding: 1rem;
     }
     
     /* 경고 메시지 */
     .stWarning {
-        background: linear-gradient(135deg, #FFF9C4 0%, #FFF59D 100%);
-        border-left: 5px solid #FBC02D;
+        background: #FFF9F0;
+        border-left: 5px solid #D4A574;
         border-radius: 10px;
         padding: 1rem;
     }
     
     /* 에러 메시지 */
     .stError {
-        background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%);
-        border-left: 5px solid #F44336;
+        background: #FDF6F4;
+        border-left: 5px solid #C89B8C;
         border-radius: 10px;
         padding: 1rem;
     }
     
     /* 정보 메시지 */
     .stInfo {
-        background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
-        border-left: 5px solid #2196F3;
+        background: #EEF5F9;
+        border-left: 5px solid #6B9AB8;
         border-radius: 10px;
         padding: 1rem;
     }
@@ -371,6 +449,33 @@ st.markdown("""
     /* 불필요한 여백 제거 */
     .block-container {
         padding-top: 3rem;
+    }
+    
+    /* 반응형 디자인 */
+    @media (max-width: 768px) {
+        div[data-testid="stRadio"] > div {
+            gap: 1.5rem;
+            padding: 2rem 1rem;
+        }
+        
+        div[data-testid="stRadio"] > div > label {
+            min-width: 100px;
+            min-height: 180px;
+        }
+        
+        div[data-testid="stRadio"] > div > label::before {
+            width: 75px;
+            height: 100px;
+        }
+        
+        div[data-testid="stRadio"] > div > label > div {
+            font-size: 2.8rem;
+            margin-top: 110px;
+        }
+        
+        div[data-testid="stRadio"] > div > label:has(input:checked) > div {
+            font-size: 3.2rem;
+        }
     }
     </style>
 """, unsafe_allow_html=True)
@@ -390,20 +495,17 @@ def page_intro():
     # 헤더 이미지 또는 타이틀
     st.markdown("""
     <div style="text-align: center; padding: 2rem 0 1rem 0;">
-        <h1 style="font-size: 3rem; color: #2E7D32; margin-bottom: 0.5rem;">
+        <h1 style="font-size: 3rem; color: #2E5945; margin-bottom: 0.5rem;">
             🍽️ 평창 웰니스 클래스
         </h1>
-        <p style="font-size: 1.3rem; color: #558B2F; font-weight: 500;">
+        <p style="font-size: 1.3rem; color: #5D8A6F; font-weight: 500;">
             나의 미각탐험 ! MPTI
         </p>
-        <p style="font-size: 1rem; color: #7CB342; font-style: italic;">
+        <p style="font-size: 1rem; color: #7BA088; font-style: italic;">
             My Personal Taste Index
         </p>
     </div>
     """, unsafe_allow_html=True)
-    
-    # 메인 카드
-    st.markdown('<div class="card">', unsafe_allow_html=True)
     
     st.markdown("""
     ### 🌿 안녕하세요!
@@ -416,14 +518,18 @@ def page_intro():
     본 테스트는 **단맛, 짠맛의 선호도**를 측정하기 위해 설계되었습니다.
     """)
     
-    st.markdown('<div class="instruction-box">', unsafe_allow_html=True)
     st.markdown("""
-    #### 📋 테스트 안내
-    - **⏱️ 소요 시간**: 약 15~20분
-    - **🔬 진행 방법**: 시료를 3초간 입에 담고 뱉은 후 가장 높은 선호도의 시료를 하나만 체크
-    - **✅ 참여 방법**: 설문지를 제출하시는 것으로 연구 참여에 대한 동의 의사가 확인됩니다
-    """)
-    st.markdown('</div>', unsafe_allow_html=True)
+    <div style="background: #FFF9F0; 
+                padding: 1.5rem; border-radius: 12px; border-left: 5px solid #D4A574; 
+                margin: 1.5rem 0; box-shadow: 0 3px 10px rgba(212, 165, 116, 0.12);">
+        <h4 style="color: #A67C52; margin-bottom: 1rem;">📋 테스트 안내</h4>
+        <p style="font-size: 1.05rem; line-height: 1.8; color: #4A4A4A;">
+            • <strong>⏱️ 소요 시간</strong>: 약 15~20분<br>
+            • <strong>🔬 진행 방법</strong>: 시료를 3초간 입에 담고 뱉은 후 가장 높은 선호도의 시료를 하나만 체크<br>
+            • <strong>✅ 참여 방법</strong>: 설문지를 제출하시는 것으로 연구 참여에 대한 동의 의사가 확인됩니다
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
     
     st.markdown("""
     본 테스트와 관련하여 궁금하신 점이나 문의사항이 있으시면, 
@@ -436,10 +542,6 @@ def page_intro():
     - 유정연 (98you21@snu.ac.kr)
     """)
     
-    st.markdown('</div>', unsafe_allow_html=True)
-    
-    # 이메일 입력 카드
-    st.markdown('<div class="card">', unsafe_allow_html=True)
     st.markdown("### 📧 시작하기")
     email = st.text_input("이메일 주소를 입력해주세요 *", placeholder="example@email.com", key="email_input")
     
@@ -452,18 +554,14 @@ def page_intro():
                 st.rerun()
             else:
                 st.error("❌ 유효한 이메일 주소를 입력해주세요.")
-    
-    st.markdown('</div>', unsafe_allow_html=True)
 
 def page_basic_info():
     st.markdown("""
     <div style="text-align: center; padding: 1rem 0;">
         <h1>📝 기본 정보</h1>
-        <p style="color: #558B2F; font-size: 1.1rem;">다음 질문에 응답해 주시기 바랍니다</p>
+        <p style="color: #5D8A6F; font-size: 1.1rem;">다음 질문에 응답해 주시기 바랍니다</p>
     </div>
     """, unsafe_allow_html=True)
-    
-    st.markdown('<div class="card">', unsafe_allow_html=True)
     
     # 성명
     name = st.text_input("👤 성명 *", value=st.session_state.responses.get('name', ''), placeholder="홍길동", key="name_input")
@@ -473,7 +571,6 @@ def page_basic_info():
     gender = st.radio("성별 선택", ["남", "여"], 
                      index=0 if st.session_state.responses.get('gender', '남') == '남' else 1,
                      horizontal=True,
-                     label_visibility="collapsed",
                      key="gender_input")
     
     st.markdown("---")
@@ -501,8 +598,6 @@ def page_basic_info():
                                 label_visibility="collapsed",
                                 key="weight_input")
     
-    st.markdown('</div>', unsafe_allow_html=True)
-    
     st.markdown("---")
     
     col1, col2 = st.columns([1, 5])
@@ -528,36 +623,38 @@ def page_sweet_preference():
     st.markdown("""
     <div style="text-align: center; padding: 1rem 0;">
         <h1>🍑 단맛 선호도 조사</h1>
-        <p style="color: #1976D2; font-size: 1.1rem;">복숭아 음료 테스트</p>
+        <p style="color: #6B9AB8; font-size: 1.1rem;">복숭아 음료 테스트</p>
     </div>
     """, unsafe_allow_html=True)
     
-    st.markdown('<div class="card">', unsafe_allow_html=True)
-    
     st.markdown("""
-    <div class="blue-box">
-    <h4 style="color: #1565C0; margin-bottom: 1rem;">🔵 파란 글씨 표시된 시료</h4>
-    <p style="font-size: 1.05rem; line-height: 1.8;">
-        <strong>• 복숭아 음료를 마신다고 생각하면서</strong>,<br>
-        시료 순서대로 <strong>(1 → 2 → 3 → 4 → 5)</strong> 맛을 보고<br>
-        <strong style="color: #1565C0;">가장 높은 선호도의 시료를 하나만 체크</strong>해주세요 ✓
-    </p>
+    <div style="background: #EEF5F9; 
+                padding: 2rem; border-radius: 16px; border-left: 6px solid #6B9AB8; 
+                margin: 2rem 0; box-shadow: 0 4px 12px rgba(107, 154, 184, 0.15);">
+        <h4 style="color: #4A7899; margin-bottom: 1rem;">🔵 파란 글씨 표시된 시료</h4>
+        <p style="font-size: 1.05rem; line-height: 1.8; color: #4A4A4A;">
+            <strong>• 복숭아 음료를 마신다고 생각하면서</strong>,<br>
+            시료 순서대로 <strong>(1 → 2 → 3 → 4 → 5)</strong> 맛을 보고<br>
+            <strong style="color: #4A7899;">가장 높은 선호도의 시료를 하나만 체크</strong>해주세요 ✓
+        </p>
     </div>
     """, unsafe_allow_html=True)
     
     st.markdown("<br>", unsafe_allow_html=True)
-    
     st.markdown("### 🧪 시료 선택")
-    sweet_preference = st.radio(
-        "음료수를 마신다고 생각했을 때, 가장 선호하는 시료를 선택해주세요 *",
-        options=["1", "2", "3", "4", "5"],
-        index=None if 'sweet_preference' not in st.session_state.responses else ["1", "2", "3", "4", "5"].index(st.session_state.responses['sweet_preference']),
-        horizontal=True,
-        label_visibility="visible",
-        key="sweet_input"
-    )
+    st.markdown("**음료수를 마신다고 생각했을 때, 가장 선호하는 시료를 선택해주세요 ***")
     
-    st.markdown('</div>', unsafe_allow_html=True)
+    # 라디오 버튼
+    current_value = st.session_state.responses.get('sweet_preference', None)
+    
+    sweet_preference = st.radio(
+        "시료 선택",
+        options=["1", "2", "3", "4", "5"],
+        index=None if current_value is None else ["1", "2", "3", "4", "5"].index(current_value),
+        horizontal=True,
+        key="sweet_input",
+        label_visibility="collapsed"
+    )
     
     st.markdown("---")
     
@@ -580,36 +677,38 @@ def page_salty_preference():
     st.markdown("""
     <div style="text-align: center; padding: 1rem 0;">
         <h1>🥣 짠맛 선호도 조사</h1>
-        <p style="color: #D32F2F; font-size: 1.1rem;">콩나물국 테스트</p>
+        <p style="color: #C89B8C; font-size: 1.1rem;">콩나물국 테스트</p>
     </div>
     """, unsafe_allow_html=True)
     
-    st.markdown('<div class="card">', unsafe_allow_html=True)
-    
     st.markdown("""
-    <div class="red-box">
-    <h4 style="color: #C62828; margin-bottom: 1rem;">🔴 빨간 글씨 표시된 시료</h4>
-    <p style="font-size: 1.05rem; line-height: 1.8;">
-        <strong>• 콩나물국을 먹는다고 생각하면서</strong>,<br>
-        시료 순서대로 <strong>(1 → 2 → 3 → 4 → 5)</strong> 맛을 보고<br>
-        <strong style="color: #C62828;">가장 높은 선호도의 시료를 하나만 체크</strong>해주세요 ✓
-    </p>
+    <div style="background: #FDF6F4; 
+                padding: 2rem; border-radius: 16px; border-left: 6px solid #C89B8C; 
+                margin: 2rem 0; box-shadow: 0 4px 12px rgba(200, 155, 140, 0.15);">
+        <h4 style="color: #A67C6D; margin-bottom: 1rem;">🔴 빨간 글씨 표시된 시료</h4>
+        <p style="font-size: 1.05rem; line-height: 1.8; color: #4A4A4A;">
+            <strong>• 콩나물국을 먹는다고 생각하면서</strong>,<br>
+            시료 순서대로 <strong>(1 → 2 → 3 → 4 → 5)</strong> 맛을 보고<br>
+            <strong style="color: #A67C6D;">가장 높은 선호도의 시료를 하나만 체크</strong>해주세요 ✓
+        </p>
     </div>
     """, unsafe_allow_html=True)
     
     st.markdown("<br>", unsafe_allow_html=True)
-    
     st.markdown("### 🧪 시료 선택")
-    salty_preference = st.radio(
-        "콩나물국을 먹는다고 생각했을 때, 가장 선호하는 시료를 선택해주세요 *",
-        options=["1", "2", "3", "4", "5"],
-        index=None if 'salty_preference' not in st.session_state.responses else ["1", "2", "3", "4", "5"].index(st.session_state.responses['salty_preference']),
-        horizontal=True,
-        label_visibility="visible",
-        key="salty_input"
-    )
+    st.markdown("**콩나물국을 먹는다고 생각했을 때, 가장 선호하는 시료를 선택해주세요 ***")
     
-    st.markdown('</div>', unsafe_allow_html=True)
+    # 라디오 버튼
+    current_value = st.session_state.responses.get('salty_preference', None)
+    
+    salty_preference = st.radio(
+        "시료 선택",
+        options=["1", "2", "3", "4", "5"],
+        index=None if current_value is None else ["1", "2", "3", "4", "5"].index(current_value),
+        horizontal=True,
+        key="salty_input",
+        label_visibility="collapsed"
+    )
     
     st.markdown("---")
     
@@ -632,7 +731,7 @@ def page_complete():
     st.markdown("""
     <div style="text-align: center; padding: 2rem 0;">
         <h1 style="font-size: 3rem;">✅ 테스트 완료!</h1>
-        <p style="color: #558B2F; font-size: 1.3rem; margin-top: 1rem;">소중한 시간 내어 참여해주셔서 감사합니다 🙏</p>
+        <p style="color: #5D8A6F; font-size: 1.3rem; margin-top: 1rem;">소중한 시간 내어 참여해주셔서 감사합니다 🙏</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -657,17 +756,18 @@ def page_complete():
             st.warning("⚠️ Supabase 연결이 설정되지 않았습니다. 로컬 다운로드만 가능합니다.")
             st.session_state.saved_to_db = False
     
-    st.markdown('<div class="green-box">', unsafe_allow_html=True)
     st.markdown("""
-    ### 🎉 감사합니다!
-    
-    귀하의 소중한 응답이 성공적으로 제출되었습니다.
-    
-    본 연구에 참여해 주셔서 진심으로 감사드립니다.
-    
-    여러분의 데이터는 정밀 식의학 연구 발전에 큰 도움이 될 것입니다. 💚
-    """)
-    st.markdown('</div>', unsafe_allow_html=True)
+    <div style="background: #F0F7F4; 
+                padding: 2rem; border-radius: 12px; border-left: 5px solid #5D8A6F; 
+                margin: 1.5rem 0; box-shadow: 0 3px 10px rgba(93, 138, 111, 0.12);">
+        <h3 style="color: #2E5945;">🎉 감사합니다!</h3>
+        <p style="font-size: 1.05rem; line-height: 1.8; color: #4A4A4A;">
+            귀하의 소중한 응답이 성공적으로 제출되었습니다.<br><br>
+            본 연구에 참여해 주셔서 진심으로 감사드립니다.<br><br>
+            여러분의 데이터는 정밀 식의학 연구 발전에 큰 도움이 될 것입니다. 💚
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
     
     # 제출 정보 표시
     if st.session_state.get('saved_to_db', False):
@@ -676,7 +776,6 @@ def page_complete():
         weight_kg = st.session_state.responses.get('weight', 70)
         bmi = weight_kg / (height_m ** 2)
         
-        st.markdown('<div class="card">', unsafe_allow_html=True)
         st.markdown("### 📋 제출 완료 요약")
         
         col1, col2 = st.columns(2)
@@ -703,24 +802,20 @@ def page_complete():
         ### 🍽️ 미각 선호도 결과
         
         <div style="display: flex; justify-content: space-around; margin: 2rem 0;">
-            <div style="text-align: center; padding: 1.5rem; background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%); border-radius: 15px; flex: 1; margin: 0 1rem;">
+            <div style="text-align: center; padding: 1.5rem; background: #EEF5F9; border-radius: 12px; flex: 1; margin: 0 1rem; border: 1px solid #D1E3EC;">
                 <div style="font-size: 2.5rem;">🍑</div>
-                <div style="font-size: 1.5rem; font-weight: 700; color: #1565C0; margin: 0.5rem 0;">시료 {st.session_state.responses.get('sweet_preference', '-')}</div>
-                <div style="color: #1976D2;">단맛 선호</div>
+                <div style="font-size: 1.5rem; font-weight: 700; color: #4A7899; margin: 0.5rem 0;">시료 {st.session_state.responses.get('sweet_preference', '-')}</div>
+                <div style="color: #6B9AB8;">단맛 선호</div>
             </div>
-            <div style="text-align: center; padding: 1.5rem; background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%); border-radius: 15px; flex: 1; margin: 0 1rem;">
+            <div style="text-align: center; padding: 1.5rem; background: #FDF6F4; border-radius: 12px; flex: 1; margin: 0 1rem; border: 1px solid #E8D5CF;">
                 <div style="font-size: 2.5rem;">🥣</div>
-                <div style="font-size: 1.5rem; font-weight: 700; color: #C62828; margin: 0.5rem 0;">시료 {st.session_state.responses.get('salty_preference', '-')}</div>
-                <div style="color: #D32F2F;">짠맛 선호</div>
+                <div style="font-size: 1.5rem; font-weight: 700; color: #A67C6D; margin: 0.5rem 0;">시료 {st.session_state.responses.get('salty_preference', '-')}</div>
+                <div style="color: #C89B8C;">짠맛 선호</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
-        
-        st.markdown('</div>', unsafe_allow_html=True)
     
     # 액션 버튼들
-    st.markdown('<div class="card">', unsafe_allow_html=True)
-    
     col1, col2 = st.columns(2)
     
     with col1:
@@ -746,8 +841,6 @@ def page_complete():
             if 'saved_to_db' in st.session_state:
                 del st.session_state.saved_to_db
             st.rerun()
-    
-    st.markdown('</div>', unsafe_allow_html=True)
 
 def admin_login():
     """관리자 로그인 페이지"""
@@ -756,8 +849,6 @@ def admin_login():
         <h1>🔐 관리자 로그인</h1>
     </div>
     """, unsafe_allow_html=True)
-    
-    st.markdown('<div class="card">', unsafe_allow_html=True)
     
     password = st.text_input("🔑 비밀번호를 입력하세요", type="password", key="admin_password")
     
@@ -775,14 +866,12 @@ def admin_login():
         if st.button("↩️ 취소", use_container_width=True):
             st.session_state.admin_mode = False
             st.rerun()
-    
-    st.markdown('</div>', unsafe_allow_html=True)
 
 def admin_page():
     """관리자 페이지"""
     st.markdown("""
-    <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 2rem; border-radius: 20px; text-align: center; margin-bottom: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
-        <h1 style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">🔧 관리자 대시보드</h1>
+    <div style="background: #5D8A6F; color: white; padding: 2rem; border-radius: 16px; text-align: center; margin-bottom: 2rem; box-shadow: 0 6px 20px rgba(46, 89, 69, 0.2);">
+        <h1 style="color: white;">🔧 관리자 대시보드</h1>
         <p style="font-size: 1.1rem; margin-top: 0.5rem;">미각 MPTI 응답 관리 시스템</p>
     </div>
     """, unsafe_allow_html=True)
@@ -840,7 +929,6 @@ def admin_page():
         st.markdown("<br><br>", unsafe_allow_html=True)
         
         # 응답 목록
-        st.markdown('<div class="card">', unsafe_allow_html=True)
         st.markdown("### 📊 응답 기록")
         
         # 표시할 컬럼 선택
@@ -859,10 +947,7 @@ def admin_page():
             use_container_width=True
         )
         
-        st.markdown('</div>', unsafe_allow_html=True)
-        
         # 개별 응답 상세보기
-        st.markdown('<div class="card">', unsafe_allow_html=True)
         st.markdown("### 🔍 개별 응답 상세보기")
         
         if '성명' in df_db.columns and '이메일' in df_db.columns:
@@ -883,7 +968,11 @@ def admin_page():
                 else:
                     bmi = 0
                 
-                st.markdown('<div class="green-box">', unsafe_allow_html=True)
+                st.markdown("""
+                <div style="background: #F0F7F4; 
+                            padding: 2rem; border-radius: 12px; border-left: 5px solid #5D8A6F; 
+                            margin: 1.5rem 0; box-shadow: 0 3px 10px rgba(93, 138, 111, 0.12);">
+                """, unsafe_allow_html=True)
                 
                 col1, col2 = st.columns(2)
                 
@@ -921,13 +1010,9 @@ def admin_page():
                             st.json(response_detail)
                     except:
                         st.warning("⚠️ 응답 데이터를 불러올 수 없습니다.")
-        
-        st.markdown('</div>', unsafe_allow_html=True)
     
     else:
-        st.markdown('<div class="card">', unsafe_allow_html=True)
         st.info("📝 아직 제출된 응답이 없습니다.")
-        st.markdown('</div>', unsafe_allow_html=True)
 
 # 메인 로직
 def main():
@@ -935,8 +1020,8 @@ def main():
     with st.sidebar:
         st.markdown("""
         <div style="text-align: center; padding: 1rem 0;">
-            <h2 style="color: #2E7D32;">🌿 평창 웰니스</h2>
-            <p style="color: #558B2F;">미각 MPTI</p>
+            <h2 style="color: #2E5945;">🌿 평창 웰니스</h2>
+            <p style="color: #5D8A6F;">미각 MPTI</p>
         </div>
         """, unsafe_allow_html=True)
         
@@ -965,7 +1050,7 @@ def main():
         st.markdown("---")
         
         st.markdown("""
-        <div style="font-size: 0.85rem; color: #757575; padding: 1rem 0;">
+        <div style="font-size: 0.85rem; color: #6B7B6A; padding: 1rem 0;">
             <p><strong>연구기관</strong></p>
             <p>서울대학교<br>정밀푸드솔루션연구실</p>
             <br>
