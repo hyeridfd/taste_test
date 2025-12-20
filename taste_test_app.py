@@ -817,7 +817,7 @@ def page_basic_info():
 def page_sweet_preference():
     st.markdown("""
     <div style="text-align: center; padding: 1rem 0;">
-        <h1>🍑 단맛 선호도 조사</h1>
+        <h1>🍫 단맛 선호도 조사</h1>
     </div>
     """, unsafe_allow_html=True)
     
@@ -902,7 +902,7 @@ def page_sweet_preference():
 def page_salty_preference():
     st.markdown("""
     <div style="text-align: center; padding: 1rem 0;">
-        <h1>🥣 짠맛 선호도 조사</h1>
+        <h1>🧂 짠맛 선호도 조사</h1>
     </div>
     """, unsafe_allow_html=True)
     
@@ -1060,12 +1060,12 @@ def page_complete():
         
         <div style="display: flex; justify-content: space-around; margin: 2rem 0;">
             <div style="text-align: center; padding: 1.5rem; background: #EEF5F9; border-radius: 12px; flex: 1; margin: 0 1rem; border: 1px solid #D1E3EC;">
-                <div style="font-size: 2.5rem;">🍑</div>
+                <div style="font-size: 2.5rem;">🍫</div>
                 <div style="font-size: 1.5rem; font-weight: 700; color: #4A7899; margin: 0.5rem 0;">시료 {st.session_state.responses.get('sweet_preference', '-')}</div>
                 <div style="color: #6B9AB8;">단맛 선호</div>
             </div>
             <div style="text-align: center; padding: 1.5rem; background: #FDF6F4; border-radius: 12px; flex: 1; margin: 0 1rem; border: 1px solid #E8D5CF;">
-                <div style="font-size: 2.5rem;">🥣</div>
+                <div style="font-size: 2.5rem;">🧂</div>
                 <div style="font-size: 1.5rem; font-weight: 700; color: #A67C6D; margin: 0.5rem 0;">시료 {st.session_state.responses.get('salty_preference', '-')}</div>
                 <div style="color: #C89B8C;">짠맛 선호</div>
             </div>
