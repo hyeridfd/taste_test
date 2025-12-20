@@ -69,13 +69,18 @@ st.set_page_config(
 st.markdown("""
     <style>
     /* 전체 배경 - 파스텔 그라데이션 */
+    # CSS 스타일링 부분의 배경 섹션을 다음과 같이 수정:
+
+st.markdown("""
+    <style>
+    /* 전체 배경 - 자연스러운 연한 연두색 */
     .stApp {
         background: linear-gradient(180deg, 
-            #E8F5E9 0%,
-            #B2DFDB 25%,
-            #FFE0B2 50%,
-            #F8BBD0 75%,
-            #E1BEE7 100%
+            #F1F8F4 0%,
+            #E8F5E9 25%,
+            #E0F2E9 50%,
+            #D7F0DD 75%,
+            #E8F5E9 100%
         );
         background-attachment: fixed;
     }
