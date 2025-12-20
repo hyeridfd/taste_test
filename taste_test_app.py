@@ -5,7 +5,26 @@ import json
 import base64
 import time
 import matplotlib.pyplot as plt
+import matplotlib as mpl
+import matplotlib.font_manager as fm
 
+def set_korean_font():
+    # 1) 프로젝트에 포함한 폰트 우선
+    font_candidates = [
+        os.path.join(os.path.dirname(__file__), "fonts", "NanumGothic.ttf"),
+        "fonts/NanumGothic.ttf",
+        "/usr/share/fonts/truetype/nanum/NanumGothic.ttf",  # 리눅스에 설치돼있는 경우
+    ]
+
+    for fp in font_candidates:
+        if os.path.exists(fp):
+            fm.fontManager.addfont(fp)
+            mpl.rcParams["font.family"] = fm.FontProperties(fname=fp).get_name()
+            break
+
+    mpl.rcParams["axes.unicode_minus"] = False  # 마이너스 기호 깨짐 방지
+
+set_korean_font()
 
 # ===== Supabase helpers ======================================
 from supabase import create_client, Client
