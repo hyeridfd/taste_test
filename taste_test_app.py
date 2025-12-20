@@ -4,8 +4,6 @@ from datetime import datetime
 import json
 import base64
 import time
-import plotly.graph_objects as go
-import plotly.express as px
 
 # ===== Supabase helpers ======================================
 from supabase import create_client, Client
@@ -39,7 +37,6 @@ def insert_taste_response(response_data: dict):
     row = {
         "이메일": response_data.get("email", ""),
         "성명": response_data.get("name", ""),
-        "소속": response_data.get("affiliation", ""),
         "성별": response_data.get("gender", ""),
         "나이": response_data.get("age", 0),
         "신장": response_data.get("height", 0),
@@ -764,9 +761,6 @@ def page_basic_info():
     # 성명
     name = st.text_input("👤 성명 *", value=st.session_state.responses.get('name', ''), placeholder="홍길동", key="name_input")
     
-    # 소속 추가
-    affiliation = st.text_input("🏢 소속 *", value=st.session_state.responses.get('affiliation', ''), placeholder="예: 서울대학교, ABC회사, 평창군 등", key="affiliation_input")
-    
     # 성별
     st.markdown("#### ⚥ 성별 *")
     gender = st.radio("성별 선택", ["남", "여"], 
@@ -809,9 +803,8 @@ def page_basic_info():
     
     with col2:
         if st.button("다음 단계로 →", type="primary", use_container_width=True, key="next_basic"):
-            if name and affiliation:
+            if name:
                 st.session_state.responses['name'] = name
-                st.session_state.responses['affiliation'] = affiliation
                 st.session_state.responses['gender'] = gender
                 st.session_state.responses['age'] = age
                 st.session_state.responses['height'] = height
@@ -1047,17 +1040,17 @@ def page_complete():
         with col1:
             st.markdown(f"""
             - **👤 이름**: {st.session_state.responses.get('name', '-')}
-            - **🏢 소속**: {st.session_state.responses.get('affiliation', '-')}
             - **📧 이메일**: {st.session_state.responses.get('email', '-')}
             - **🎂 나이**: {st.session_state.responses.get('age', '-')}세
+            - **⚥ 성별**: {st.session_state.responses.get('gender', '-')}
             """)
         
         with col2:
             st.markdown(f"""
-            - **⚥ 성별**: {st.session_state.responses.get('gender', '-')}
             - **📏 신장**: {st.session_state.responses.get('height', '-')}cm
             - **⚖️ 체중**: {st.session_state.responses.get('weight', '-')}kg
             - **📊 BMI**: {bmi:.1f}
+            - **📅 제출**: {datetime.now().strftime('%Y-%m-%d %H:%M')}
             """)
         
         st.markdown("---")
@@ -1192,243 +1185,11 @@ def admin_page():
         
         st.markdown("<br><br>", unsafe_allow_html=True)
         
-        # ========== 새로운 시각화 섹션 추가 ==========
-        st.markdown("### 📊 소속별 시료 선택 분석")
-        
-        if '소속' in df_db.columns and '단맛선호' in df_db.columns and '짠맛선호' in df_db.columns:
-            
-            # 탭으로 단맛/짠맛 구분
-            tab1, tab2 = st.tabs(["🍫 단맛 선호도", "🧂 짠맛 선호도"])
-            
-            with tab1:
-                st.markdown("#### 소속별 단맛 시료 선택 분포")
-                
-                # 소속별 단맛 선호도 집계
-                sweet_by_affiliation = df_db.groupby(['소속', '단맛선호']).size().reset_index(name='count')
-                
-                if not sweet_by_affiliation.empty:
-                    # 소속 선택
-                    affiliations = ['전체'] + sorted(df_db['소속'].dropna().unique().tolist())
-                    selected_affiliation = st.selectbox("소속 선택 (단맛)", affiliations, key="sweet_affiliation")
-                    
-                    if selected_affiliation == '전체':
-                        # 전체 데이터
-                        data_to_plot = df_db['단맛선호'].value_counts().sort_index()
-                        title = "전체 참여자의 단맛 시료 선호도"
-                    else:
-                        # 특정 소속 데이터
-                        data_to_plot = df_db[df_db['소속'] == selected_affiliation]['단맛선호'].value_counts().sort_index()
-                        title = f"{selected_affiliation}의 단맛 시료 선호도"
-                    
-                    if not data_to_plot.empty:
-                        col1, col2 = st.columns([1, 1])
-                        
-                        with col1:
-                            # 원형 차트
-                            fig_pie = go.Figure(data=[go.Pie(
-                                labels=[f"시료 {x}" for x in data_to_plot.index],
-                                values=data_to_plot.values,
-                                hole=0.3,
-                                marker=dict(colors=['#6B9AB8', '#8BAEC8', '#A8C3D7', '#C5D8E6', '#E0EBF3']),
-                                textinfo='label+percent',
-                                textfont_size=14
-                            )])
-                            
-                            fig_pie.update_layout(
-                                title=title,
-                                height=400,
-                                showlegend=True,
-                                paper_bgcolor='rgba(0,0,0,0)',
-                                plot_bgcolor='rgba(0,0,0,0)'
-                            )
-                            
-                            st.plotly_chart(fig_pie, use_container_width=True)
-                        
-                        with col2:
-                            # 막대 차트
-                            fig_bar = go.Figure(data=[go.Bar(
-                                x=[f"시료 {x}" for x in data_to_plot.index],
-                                y=data_to_plot.values,
-                                marker=dict(color='#6B9AB8'),
-                                text=data_to_plot.values,
-                                textposition='auto'
-                            )])
-                            
-                            fig_bar.update_layout(
-                                title="응답 수",
-                                xaxis_title="시료 번호",
-                                yaxis_title="선택 수",
-                                height=400,
-                                paper_bgcolor='rgba(0,0,0,0)',
-                                plot_bgcolor='rgba(0,0,0,0)'
-                            )
-                            
-                            st.plotly_chart(fig_bar, use_container_width=True)
-                        
-                        # 통계 표
-                        st.markdown("##### 📈 상세 통계")
-                        stats_df = pd.DataFrame({
-                            '시료 번호': [f"시료 {x}" for x in data_to_plot.index],
-                            '선택 수': data_to_plot.values,
-                            '비율': [f"{(v/data_to_plot.sum()*100):.1f}%" for v in data_to_plot.values]
-                        })
-                        st.dataframe(stats_df, use_container_width=True, hide_index=True)
-                    else:
-                        st.info(f"📝 {selected_affiliation}의 단맛 선호도 데이터가 없습니다.")
-                else:
-                    st.info("📝 단맛 선호도 데이터가 없습니다.")
-            
-            with tab2:
-                st.markdown("#### 소속별 짠맛 시료 선택 분포")
-                
-                # 소속별 짠맛 선호도 집계
-                salty_by_affiliation = df_db.groupby(['소속', '짠맛선호']).size().reset_index(name='count')
-                
-                if not salty_by_affiliation.empty:
-                    # 소속 선택
-                    affiliations = ['전체'] + sorted(df_db['소속'].dropna().unique().tolist())
-                    selected_affiliation = st.selectbox("소속 선택 (짠맛)", affiliations, key="salty_affiliation")
-                    
-                    if selected_affiliation == '전체':
-                        # 전체 데이터
-                        data_to_plot = df_db['짠맛선호'].value_counts().sort_index()
-                        title = "전체 참여자의 짠맛 시료 선호도"
-                    else:
-                        # 특정 소속 데이터
-                        data_to_plot = df_db[df_db['소속'] == selected_affiliation]['짠맛선호'].value_counts().sort_index()
-                        title = f"{selected_affiliation}의 짠맛 시료 선호도"
-                    
-                    if not data_to_plot.empty:
-                        col1, col2 = st.columns([1, 1])
-                        
-                        with col1:
-                            # 원형 차트
-                            fig_pie = go.Figure(data=[go.Pie(
-                                labels=[f"시료 {x}" for x in data_to_plot.index],
-                                values=data_to_plot.values,
-                                hole=0.3,
-                                marker=dict(colors=['#C89B8C', '#D4AEA0', '#E0C1B4', '#ECD4C8', '#F8E7DC']),
-                                textinfo='label+percent',
-                                textfont_size=14
-                            )])
-                            
-                            fig_pie.update_layout(
-                                title=title,
-                                height=400,
-                                showlegend=True,
-                                paper_bgcolor='rgba(0,0,0,0)',
-                                plot_bgcolor='rgba(0,0,0,0)'
-                            )
-                            
-                            st.plotly_chart(fig_pie, use_container_width=True)
-                        
-                        with col2:
-                            # 막대 차트
-                            fig_bar = go.Figure(data=[go.Bar(
-                                x=[f"시료 {x}" for x in data_to_plot.index],
-                                y=data_to_plot.values,
-                                marker=dict(color='#C89B8C'),
-                                text=data_to_plot.values,
-                                textposition='auto'
-                            )])
-                            
-                            fig_bar.update_layout(
-                                title="응답 수",
-                                xaxis_title="시료 번호",
-                                yaxis_title="선택 수",
-                                height=400,
-                                paper_bgcolor='rgba(0,0,0,0)',
-                                plot_bgcolor='rgba(0,0,0,0)'
-                            )
-                            
-                            st.plotly_chart(fig_bar, use_container_width=True)
-                        
-                        # 통계 표
-                        st.markdown("##### 📈 상세 통계")
-                        stats_df = pd.DataFrame({
-                            '시료 번호': [f"시료 {x}" for x in data_to_plot.index],
-                            '선택 수': data_to_plot.values,
-                            '비율': [f"{(v/data_to_plot.sum()*100):.1f}%" for v in data_to_plot.values]
-                        })
-                        st.dataframe(stats_df, use_container_width=True, hide_index=True)
-                    else:
-                        st.info(f"📝 {selected_affiliation}의 짠맛 선호도 데이터가 없습니다.")
-                else:
-                    st.info("📝 짠맛 선호도 데이터가 없습니다.")
-            
-            # 소속별 비교 차트
-            st.markdown("---")
-            st.markdown("#### 📊 소속 간 비교")
-            
-            comparison_tab1, comparison_tab2 = st.tabs(["단맛 비교", "짠맛 비교"])
-            
-            with comparison_tab1:
-                # 소속별 단맛 선호도 히트맵
-                sweet_pivot = df_db.pivot_table(
-                    index='소속', 
-                    columns='단맛선호', 
-                    aggfunc='size', 
-                    fill_value=0
-                )
-                
-                if not sweet_pivot.empty:
-                    fig_heatmap = px.imshow(
-                        sweet_pivot,
-                        labels=dict(x="시료 번호", y="소속", color="선택 수"),
-                        x=[f"시료 {col}" for col in sweet_pivot.columns],
-                        y=sweet_pivot.index,
-                        color_continuous_scale='Blues',
-                        aspect='auto'
-                    )
-                    
-                    fig_heatmap.update_layout(
-                        title="소속별 단맛 시료 선택 히트맵",
-                        height=max(300, len(sweet_pivot) * 50),
-                        paper_bgcolor='rgba(0,0,0,0)',
-                        plot_bgcolor='rgba(0,0,0,0)'
-                    )
-                    
-                    st.plotly_chart(fig_heatmap, use_container_width=True)
-            
-            with comparison_tab2:
-                # 소속별 짠맛 선호도 히트맵
-                salty_pivot = df_db.pivot_table(
-                    index='소속', 
-                    columns='짠맛선호', 
-                    aggfunc='size', 
-                    fill_value=0
-                )
-                
-                if not salty_pivot.empty:
-                    fig_heatmap = px.imshow(
-                        salty_pivot,
-                        labels=dict(x="시료 번호", y="소속", color="선택 수"),
-                        x=[f"시료 {col}" for col in salty_pivot.columns],
-                        y=salty_pivot.index,
-                        color_continuous_scale='Reds',
-                        aspect='auto'
-                    )
-                    
-                    fig_heatmap.update_layout(
-                        title="소속별 짠맛 시료 선택 히트맵",
-                        height=max(300, len(salty_pivot) * 50),
-                        paper_bgcolor='rgba(0,0,0,0)',
-                        plot_bgcolor='rgba(0,0,0,0)'
-                    )
-                    
-                    st.plotly_chart(fig_heatmap, use_container_width=True)
-        
-        else:
-            st.info("📝 소속 또는 시료 선호도 데이터가 없습니다.")
-        
-        st.markdown("<br><br>", unsafe_allow_html=True)
-        # ========== 시각화 섹션 끝 ==========
-        
         # 응답 목록
         st.markdown("### 📊 응답 기록")
         
-        # 표시할 컬럼 선택 (소속 추가)
-        display_cols = ["성명", "소속", "이메일", "성별", "나이", "신장", "체중", "단맛선호", "짠맛선호", "제출시간"]
+        # 표시할 컬럼 선택
+        display_cols = ["성명", "이메일", "성별", "나이", "신장", "체중", "단맛선호", "짠맛선호", "제출시간"]
         available_cols = [col for col in display_cols if col in df_db.columns]
         
         st.dataframe(df_db[available_cols], use_container_width=True, height=400)
@@ -1449,12 +1210,12 @@ def admin_page():
         if '성명' in df_db.columns and '이메일' in df_db.columns:
             selected_option = st.selectbox(
                 "참여자 선택",
-                options=df_db.apply(lambda x: f"{x['성명']} ({x.get('소속', '소속 미기재')}) - {x['이메일']}", axis=1).tolist(),
+                options=df_db.apply(lambda x: f"{x['성명']} ({x['이메일']})", axis=1).tolist(),
                 key="admin_select"
             )
             
             if selected_option:
-                selected_idx = df_db.apply(lambda x: f"{x['성명']} ({x.get('소속', '소속 미기재')}) - {x['이메일']}", axis=1).tolist().index(selected_option)
+                selected_idx = df_db.apply(lambda x: f"{x['성명']} ({x['이메일']})", axis=1).tolist().index(selected_option)
                 selected_row = df_db.iloc[selected_idx]
                 
                 # BMI 계산
@@ -1475,7 +1236,6 @@ def admin_page():
                 with col1:
                     st.markdown(f"""
                     - **👤 성명**: {selected_row.get('성명', '-')}
-                    - **🏢 소속**: {selected_row.get('소속', '-')}
                     - **📧 이메일**: {selected_row.get('이메일', '-')}
                     - **⚥ 성별**: {selected_row.get('성별', '-')}
                     - **🎂 나이**: {selected_row.get('나이', '-')}세
