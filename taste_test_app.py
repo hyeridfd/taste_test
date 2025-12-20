@@ -583,9 +583,8 @@ def page_basic_info():
     gender = st.radio("성별 선택", ["남", "여"], 
                      index=0 if st.session_state.responses.get('gender', '남') == '남' else 1,
                      horizontal=True,
-                     key="gender_input")
-    
-    st.markdown("---")
+                     key="gender_input",
+                     label_visibility="collapsed")
     
     col1, col2, col3 = st.columns(3)
     
