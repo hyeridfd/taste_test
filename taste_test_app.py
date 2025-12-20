@@ -1069,7 +1069,7 @@ def main():
             <p>서울대학교<br>정밀푸드솔루션연구실</p>
             <br>
             <p><strong>문의</strong></p>
-            <p>fwm825@snu.ac.kr<br>98you21@snu.ac.kr</p>
+            <p>02-880-4662</p>
         </div>
         """, unsafe_allow_html=True)
     
