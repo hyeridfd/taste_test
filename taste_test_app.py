@@ -65,7 +65,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# CSS 스타일링 - 웰니스 & 자연 테마
+# CSS 스타일링 - 웰니스 & 자연 테마 + 실린더 디자인
 st.markdown("""
     <style>
     /* 전체 배경 - 부드러운 아이보리/베이지 */
@@ -107,49 +107,43 @@ st.markdown("""
         margin-bottom: 1.5rem;
     }
     
-    /* 라디오 버튼 컨테이너 - 자연스러운 배치 */
+    /* 라디오 버튼 컨테이너 - 연한 연두색 배경 */
     div[data-testid="stRadio"] > div {
-        background: transparent;
-        padding: 1.5rem 1rem;
+        background: #E8F5E3;
+        padding: 2.5rem 1.5rem;
+        border-radius: 20px;
         display: flex;
         justify-content: center;
-        gap: 1.2rem;
+        gap: 2rem;
         max-width: 100%;
         flex-wrap: wrap;
+        box-shadow: 0 4px 12px rgba(93, 138, 111, 0.1);
     }
     
-    /* 각 시료 선택 카드 - 나무/자연 느낌 */
+    /* 각 시료 선택 카드 - 실린더 디자인 */
     div[data-testid="stRadio"] > div > label {
-        background: #FFFFFF;
-        border: 3px solid #D4CFC4;
-        border-radius: 16px;
-        padding: 2.5rem 1.8rem;
+        background: transparent;
+        border: none;
+        padding: 1rem;
         cursor: pointer;
         transition: all 0.35s ease;
-        box-shadow: 0 4px 12px rgba(46, 89, 69, 0.08);
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        min-width: 140px;
-        min-height: 180px;
+        justify-content: flex-start;
+        min-width: 120px;
+        min-height: 200px;
         position: relative;
-        overflow: hidden;
     }
     
-    /* 호버 효과 - 자연스러운 상승감 */
+    /* 호버 효과 */
     div[data-testid="stRadio"] > div > label:hover {
         transform: translateY(-8px);
-        box-shadow: 0 8px 24px rgba(46, 89, 69, 0.15);
-        border-color: #A8B5A1;
     }
     
-    /* 선택된 카드 - 자연스러운 초록빛 강조 */
+    /* 선택된 카드 */
     div[data-testid="stRadio"] > div > label:has(input:checked) {
-        background: #F0F7F4;
-        border: 4px solid #5D8A6F;
-        box-shadow: 0 8px 28px rgba(93, 138, 111, 0.25);
-        transform: translateY(-12px);
+        transform: translateY(-12px) scale(1.05);
     }
     
     /* 라디오 버튼 숨기기 */
@@ -157,27 +151,68 @@ st.markdown("""
         display: none;
     }
     
+    /* 실린더 컨테이너 */
+    div[data-testid="stRadio"] > div > label::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90px;
+        height: 120px;
+        background: 
+            radial-gradient(ellipse at top, #E0E0E0 0%, #BDBDBD 100%) top / 100% 25px no-repeat,
+            linear-gradient(90deg, #F5F5F5 0%, #EEEEEE 50%, #F5F5F5 100%) 0 12px / 100% calc(100% - 37px) no-repeat,
+            radial-gradient(ellipse at bottom, #BDBDBD 0%, #9E9E9E 100%) bottom / 100% 25px no-repeat;
+        border-radius: 0;
+        box-shadow: 
+            0 2px 5px rgba(0, 0, 0, 0.15) inset,
+            0 6px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.35s ease;
+        z-index: 0;
+    }
+    
+    /* 호버 시 실린더 */
+    div[data-testid="stRadio"] > div > label:hover::before {
+        box-shadow: 
+            0 2px 5px rgba(0, 0, 0, 0.15) inset,
+            0 8px 20px rgba(0, 0, 0, 0.25);
+    }
+    
+    /* 선택된 실린더 - 초록색 */
+    div[data-testid="stRadio"] > div > label:has(input:checked)::before {
+        background: 
+            radial-gradient(ellipse at top, #A5D6A7 0%, #81C784 100%) top / 100% 25px no-repeat,
+            linear-gradient(90deg, #C8E6C9 0%, #A5D6A7 50%, #C8E6C9 100%) 0 12px / 100% calc(100% - 37px) no-repeat,
+            radial-gradient(ellipse at bottom, #81C784 0%, #66BB6A 100%) bottom / 100% 25px no-repeat;
+        box-shadow: 
+            0 2px 5px rgba(76, 175, 80, 0.3) inset,
+            0 10px 25px rgba(76, 175, 80, 0.4);
+    }
+    
     /* 시료 번호 스타일 */
     div[data-testid="stRadio"] > div > label > div {
         font-size: 3.2rem;
         font-weight: 800;
-        color: #8B9A8A;
-        margin-top: 1.2rem;
+        color: #757575;
+        margin-top: 130px;
         line-height: 1;
         position: relative;
         z-index: 1;
         transition: all 0.35s ease;
         font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', Arial, sans-serif;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
     }
     
     div[data-testid="stRadio"] > div > label:hover > div {
-        color: #6B7B6A;
+        color: #616161;
         transform: scale(1.08);
     }
     
     div[data-testid="stRadio"] > div > label:has(input:checked) > div {
         color: #2E5945;
         font-size: 3.6rem;
+        text-shadow: 3px 3px 6px rgba(46, 89, 69, 0.2);
         animation: gentlePulse 0.5s ease-in-out;
     }
     
@@ -185,50 +220,6 @@ st.markdown("""
     @keyframes gentlePulse {
         0%, 100% { transform: scale(1); }
         50% { transform: scale(1.1); }
-    }
-    
-    /* 시료 용기 아이콘 */
-    div[data-testid="stRadio"] > div > label::before {
-        content: '';
-        position: absolute;
-        top: 1.5rem;
-        width: 60px;
-        height: 70px;
-        background: #E8E5DF;
-        border-radius: 8px 8px 12px 12px;
-        opacity: 0.4;
-        transition: all 0.35s ease;
-    }
-    
-    div[data-testid="stRadio"] > div > label:hover::before {
-        opacity: 0.6;
-        background: #DDD9D0;
-    }
-    
-    div[data-testid="stRadio"] > div > label:has(input:checked)::before {
-        opacity: 0.8;
-        background: #C8D8CE;
-    }
-    
-    /* 잎사귀 장식 효과 */
-    div[data-testid="stRadio"] > div > label::after {
-        content: '🌿';
-        font-size: 1.5rem;
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        opacity: 0.2;
-        transition: all 0.35s ease;
-    }
-    
-    div[data-testid="stRadio"] > div > label:hover::after {
-        opacity: 0.4;
-        transform: rotate(15deg) scale(1.1);
-    }
-    
-    div[data-testid="stRadio"] > div > label:has(input:checked)::after {
-        opacity: 0.7;
-        transform: rotate(0deg) scale(1.2);
     }
     
     /* 입력 필드 스타일 */
@@ -463,17 +454,23 @@ st.markdown("""
     /* 반응형 디자인 */
     @media (max-width: 768px) {
         div[data-testid="stRadio"] > div {
-            gap: 1rem;
+            gap: 1.5rem;
+            padding: 2rem 1rem;
         }
         
         div[data-testid="stRadio"] > div > label {
-            min-width: 120px;
-            min-height: 160px;
-            padding: 2rem 1.5rem;
+            min-width: 100px;
+            min-height: 180px;
+        }
+        
+        div[data-testid="stRadio"] > div > label::before {
+            width: 75px;
+            height: 100px;
         }
         
         div[data-testid="stRadio"] > div > label > div {
             font-size: 2.8rem;
+            margin-top: 110px;
         }
         
         div[data-testid="stRadio"] > div > label:has(input:checked) > div {
