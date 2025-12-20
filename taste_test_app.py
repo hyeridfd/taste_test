@@ -4,6 +4,8 @@ from datetime import datetime
 import json
 import base64
 import time
+import matplotlib.pyplot as plt
+
 
 # ===== Supabase helpers ======================================
 from supabase import create_client, Client
@@ -761,6 +763,8 @@ def page_basic_info():
     # 성명
     name = st.text_input("👤 성명 *", value=st.session_state.responses.get('name', ''), placeholder="홍길동", key="name_input")
     
+    affiliation = st.text_input("🏫 소속 *", value=st.session_state.responses.get('affiliation', ''), placeholder="예) 서울대학교", key="affiliation_input")
+
     # 성별
     st.markdown("#### ⚥ 성별 *")
     gender = st.radio("성별 선택", ["남", "여"], 
@@ -805,6 +809,7 @@ def page_basic_info():
         if st.button("다음 단계로 →", type="primary", use_container_width=True, key="next_basic"):
             if name:
                 st.session_state.responses['name'] = name
+                st.session_state.responses['affiliation'] = affiliation
                 st.session_state.responses['gender'] = gender
                 st.session_state.responses['age'] = age
                 st.session_state.responses['height'] = height
@@ -1043,6 +1048,7 @@ def page_complete():
             - **📧 이메일**: {st.session_state.responses.get('email', '-')}
             - **🎂 나이**: {st.session_state.responses.get('age', '-')}세
             - **⚥ 성별**: {st.session_state.responses.get('gender', '-')}
+            - **🏫 소속**: {st.session_state.responses.get('affiliation', '-')}
             """)
         
         with col2:
@@ -1124,6 +1130,41 @@ def admin_login():
             st.session_state.admin_mode = False
             st.rerun()
 
+
+# 추가
+def donut_chart_counts(series: pd.Series, title: str):
+    """값 분포를 도넛 차트로 시각화"""
+    s = series.dropna().astype(str)
+    s = s[s != ""]
+    if s.empty:
+        st.info(f"📝 {title}: 데이터가 없습니다.")
+        return
+
+    counts = s.value_counts().sort_index()
+
+    fig, ax = plt.subplots(figsize=(5, 5))
+    wedges, texts, autotexts = ax.pie(
+        counts.values,
+        labels=counts.index,
+        autopct=lambda p: f"{p:.1f}%",
+        startangle=90
+    )
+    # 도넛 효과
+    centre_circle = plt.Circle((0, 0), 0.65, fc="white")
+    fig.gca().add_artist(centre_circle)
+
+    ax.set_title(title)
+    ax.axis("equal")
+
+    st.pyplot(fig)
+
+    # 숫자 테이블도 같이 보면 좋아서 같이 출력
+    st.dataframe(
+        counts.rename("응답 수").reset_index().rename(columns={"index": "시료"}),
+        use_container_width=True,
+        hide_index=True
+    )
+
 def admin_page():
     """관리자 페이지"""
     st.markdown("""
@@ -1142,7 +1183,7 @@ def admin_page():
     
     sb = get_supabase()
     df_db = fetch_taste_responses_df() if sb else pd.DataFrame()
-    
+
     if not df_db.empty:
         # 통계 카드
         col1, col2, col3, col4 = st.columns(4)
@@ -1185,11 +1226,45 @@ def admin_page():
         
         st.markdown("<br><br>", unsafe_allow_html=True)
         
+        st.markdown("### 🥧 소속별 시료 선택 분포(원형 그래프)")
+
+        # 소속 목록
+        if "소속" in df_db.columns:
+            aff_list = sorted([x for x in df_db["소속"].dropna().astype(str).unique() if x.strip() != ""])
+        else:
+            aff_list = []
+
+        selected_aff = st.selectbox(
+            "소속 선택",
+            options=["전체"] + aff_list,
+            index=0,
+            key="aff_filter"
+        )
+
+        # 소속 필터링
+        df_viz = df_db.copy()
+        if selected_aff != "전체" and "소속" in df_viz.columns:
+            df_viz = df_viz[df_viz["소속"].astype(str) == selected_aff]
+
+        colA, colB = st.columns(2)
+
+        with colA:
+            if "단맛선호" in df_viz.columns:
+                donut_chart_counts(df_viz["단맛선호"], f"🍫 단맛 시료 선택 분포 ({selected_aff})")
+            else:
+                st.info("단맛선호 컬럼이 없습니다.")
+
+        with colB:
+            if "짠맛선호" in df_viz.columns:
+                donut_chart_counts(df_viz["짠맛선호"], f"🧂 짠맛 시료 선택 분포 ({selected_aff})")
+            else:
+                st.info("짠맛선호 컬럼이 없습니다.")
+
         # 응답 목록
         st.markdown("### 📊 응답 기록")
         
         # 표시할 컬럼 선택
-        display_cols = ["성명", "이메일", "성별", "나이", "신장", "체중", "단맛선호", "짠맛선호", "제출시간"]
+        display_cols = ["성명", "소속", "이메일", "성별", "나이", "신장", "체중", "단맛선호", "짠맛선호", "제출시간"]
         available_cols = [col for col in display_cols if col in df_db.columns]
         
         st.dataframe(df_db[available_cols], use_container_width=True, height=400)
@@ -1236,6 +1311,7 @@ def admin_page():
                 with col1:
                     st.markdown(f"""
                     - **👤 성명**: {selected_row.get('성명', '-')}
+                    - **🏫 소속**: {selected_row.get('소속', '-')}
                     - **📧 이메일**: {selected_row.get('이메일', '-')}
                     - **⚥ 성별**: {selected_row.get('성별', '-')}
                     - **🎂 나이**: {selected_row.get('나이', '-')}세
