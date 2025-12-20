@@ -339,18 +339,24 @@ st.markdown("""
     
     /* Primary 버튼 */
     .stButton > button[kind="primary"] {
-        background: #5D8A6F;
+        background: #7BA088;
         color: white;
     }
     
     .stButton > button[kind="primary"]:hover {
-        background: #4A7159;
+        background: #6A8F77;
     }
     
     /* Secondary 버튼 */
     .stButton > button[kind="secondary"] {
-        background: #7BA088;
-        color: white;
+        background: #E8F5F0;
+        color: #5D8A6F;
+        border: 2px solid #D4CFC4;
+    }
+    
+    .stButton > button[kind="secondary"]:hover {
+        background: #D5EDE5;
+        border-color: #7BA088;
     }
     
     /* 섹션 헤더 */
@@ -836,12 +842,6 @@ def page_sweet_preference():
     # 현재 선택된 값
     current_value = st.session_state.responses.get('sweet_preference', None)
     
-    # 3열 2행 레이아웃으로 시료 선택 버튼 배치
-    st.markdown("""
-    <div style="background: #E8F5E3; padding: 2rem 1rem; border-radius: 20px; 
-                box-shadow: 0 4px 12px rgba(93, 138, 111, 0.1); margin: 1rem 0;">
-    """, unsafe_allow_html=True)
-    
     # 1행: 시료 1, 2, 3
     col1, col2, col3 = st.columns(3)
     
@@ -880,8 +880,6 @@ def page_sweet_preference():
     
     with col3:
         st.write("")  # 빈 공간
-    
-    st.markdown("</div>", unsafe_allow_html=True)
     
     # 선택된 시료 표시
     if current_value:
@@ -931,12 +929,6 @@ def page_salty_preference():
     # 현재 선택된 값
     current_value = st.session_state.responses.get('salty_preference', None)
     
-    # 3열 2행 레이아웃으로 시료 선택 버튼 배치
-    st.markdown("""
-    <div style="background: #E8F5E3; padding: 2rem 1rem; border-radius: 20px; 
-                box-shadow: 0 4px 12px rgba(93, 138, 111, 0.1); margin: 1rem 0;">
-    """, unsafe_allow_html=True)
-    
     # 1행: 시료 1, 2, 3
     col1, col2, col3 = st.columns(3)
     
@@ -975,8 +967,6 @@ def page_salty_preference():
     
     with col3:
         st.write("")  # 빈 공간
-    
-    st.markdown("</div>", unsafe_allow_html=True)
     
     # 선택된 시료 표시
     if current_value:
