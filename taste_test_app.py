@@ -181,10 +181,19 @@ st.markdown("""
         background: #E8F5E3 !important;
         padding: 2.5rem 1.5rem !important;
         border-radius: 20px !important;
-        display: flex;
-        justify-content: center;
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        grid-template-rows: auto auto !important;
+        justify-items: center !important;
         gap: 2rem !important;
+        max-width: 100% !important;
         box-shadow: 0 4px 12px rgba(93, 138, 111, 0.1) !important;
+    }
+    
+    /* 5번째 항목을 중앙에 배치 */
+    div[data-testid="stRadio"]:has(input[id*="sweet_input"]) > div > label:nth-child(5),
+    div[data-testid="stRadio"]:has(input[id*="salty_input"]) > div > label:nth-child(5) {
+        grid-column: 2 / 3 !important;
     }
     
     /* 시료 선택 카드 - 실린더 디자인 */
@@ -569,12 +578,20 @@ st.markdown("""
             flex-direction: column !important;
         }
         
-        /* 시료 선택 모바일 최적화 */
+        /* 시료 선택 모바일 최적화 - 2열 그리드 */
         div[data-testid="stRadio"]:has(input[id*="sweet_input"]) > div,
         div[data-testid="stRadio"]:has(input[id*="salty_input"]) > div {
+            grid-template-columns: repeat(2, 1fr) !important;
+            grid-template-rows: auto auto auto !important;
             gap: 1.5rem !important;
             padding: 2rem 1rem !important;
-            flex-wrap: wrap !important;
+        }
+        
+        /* 5번째 항목 모바일에서 중앙 배치 */
+        div[data-testid="stRadio"]:has(input[id*="sweet_input"]) > div > label:nth-child(5),
+        div[data-testid="stRadio"]:has(input[id*="salty_input"]) > div > label:nth-child(5) {
+            grid-column: 1 / 3 !important;
+            justify-self: center !important;
         }
         
         div[data-testid="stRadio"]:has(input[id*="sweet_input"]) > div > label,
