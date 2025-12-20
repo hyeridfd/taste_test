@@ -833,17 +833,59 @@ def page_sweet_preference():
     st.markdown("### 🧪 시료 선택")
     st.markdown("**음료수를 마신다고 생각했을 때, 가장 선호하는 시료를 선택해주세요 ***")
     
-    # 라디오 버튼
+    # 현재 선택된 값
     current_value = st.session_state.responses.get('sweet_preference', None)
     
-    sweet_preference = st.radio(
-        "시료 선택",
-        options=["1", "2", "3", "4", "5"],
-        index=None if current_value is None else ["1", "2", "3", "4", "5"].index(current_value),
-        horizontal=True,
-        key="sweet_input",
-        label_visibility="collapsed"
-    )
+    # 3열 2행 레이아웃으로 시료 선택 버튼 배치
+    st.markdown("""
+    <div style="background: #E8F5E3; padding: 2rem 1rem; border-radius: 20px; 
+                box-shadow: 0 4px 12px rgba(93, 138, 111, 0.1); margin: 1rem 0;">
+    """, unsafe_allow_html=True)
+    
+    # 1행: 시료 1, 2, 3
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        if st.button("🧪 1", key="sweet_1", use_container_width=True, 
+                    type="primary" if current_value == "1" else "secondary"):
+            st.session_state.responses['sweet_preference'] = "1"
+            st.rerun()
+    
+    with col2:
+        if st.button("🧪 2", key="sweet_2", use_container_width=True,
+                    type="primary" if current_value == "2" else "secondary"):
+            st.session_state.responses['sweet_preference'] = "2"
+            st.rerun()
+    
+    with col3:
+        if st.button("🧪 3", key="sweet_3", use_container_width=True,
+                    type="primary" if current_value == "3" else "secondary"):
+            st.session_state.responses['sweet_preference'] = "3"
+            st.rerun()
+    
+    # 2행: 시료 4, 5 (5번 중앙)
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        if st.button("🧪 4", key="sweet_4", use_container_width=True,
+                    type="primary" if current_value == "4" else "secondary"):
+            st.session_state.responses['sweet_preference'] = "4"
+            st.rerun()
+    
+    with col2:
+        if st.button("🧪 5", key="sweet_5", use_container_width=True,
+                    type="primary" if current_value == "5" else "secondary"):
+            st.session_state.responses['sweet_preference'] = "5"
+            st.rerun()
+    
+    with col3:
+        st.write("")  # 빈 공간
+    
+    st.markdown("</div>", unsafe_allow_html=True)
+    
+    # 선택된 시료 표시
+    if current_value:
+        st.success(f"✅ 시료 {current_value}번이 선택되었습니다.")
     
     st.markdown("---")
     
@@ -855,8 +897,7 @@ def page_sweet_preference():
     
     with col2:
         if st.button("다음 단계로 →", type="primary", key="next_sweet", use_container_width=True):
-            if sweet_preference:
-                st.session_state.responses['sweet_preference'] = sweet_preference
+            if current_value:
                 st.session_state.page = 3
                 st.rerun()
             else:
@@ -887,17 +928,59 @@ def page_salty_preference():
     st.markdown("### 🧪 시료 선택")
     st.markdown("**콩나물국을 먹는다고 생각했을 때, 가장 선호하는 시료를 선택해주세요 ***")
     
-    # 라디오 버튼
+    # 현재 선택된 값
     current_value = st.session_state.responses.get('salty_preference', None)
     
-    salty_preference = st.radio(
-        "시료 선택",
-        options=["1", "2", "3", "4", "5"],
-        index=None if current_value is None else ["1", "2", "3", "4", "5"].index(current_value),
-        horizontal=True,
-        key="salty_input",
-        label_visibility="collapsed"
-    )
+    # 3열 2행 레이아웃으로 시료 선택 버튼 배치
+    st.markdown("""
+    <div style="background: #E8F5E3; padding: 2rem 1rem; border-radius: 20px; 
+                box-shadow: 0 4px 12px rgba(93, 138, 111, 0.1); margin: 1rem 0;">
+    """, unsafe_allow_html=True)
+    
+    # 1행: 시료 1, 2, 3
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        if st.button("🧪 1", key="salty_1", use_container_width=True, 
+                    type="primary" if current_value == "1" else "secondary"):
+            st.session_state.responses['salty_preference'] = "1"
+            st.rerun()
+    
+    with col2:
+        if st.button("🧪 2", key="salty_2", use_container_width=True,
+                    type="primary" if current_value == "2" else "secondary"):
+            st.session_state.responses['salty_preference'] = "2"
+            st.rerun()
+    
+    with col3:
+        if st.button("🧪 3", key="salty_3", use_container_width=True,
+                    type="primary" if current_value == "3" else "secondary"):
+            st.session_state.responses['salty_preference'] = "3"
+            st.rerun()
+    
+    # 2행: 시료 4, 5 (5번 중앙)
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        if st.button("🧪 4", key="salty_4", use_container_width=True,
+                    type="primary" if current_value == "4" else "secondary"):
+            st.session_state.responses['salty_preference'] = "4"
+            st.rerun()
+    
+    with col2:
+        if st.button("🧪 5", key="salty_5", use_container_width=True,
+                    type="primary" if current_value == "5" else "secondary"):
+            st.session_state.responses['salty_preference'] = "5"
+            st.rerun()
+    
+    with col3:
+        st.write("")  # 빈 공간
+    
+    st.markdown("</div>", unsafe_allow_html=True)
+    
+    # 선택된 시료 표시
+    if current_value:
+        st.success(f"✅ 시료 {current_value}번이 선택되었습니다.")
     
     st.markdown("---")
     
@@ -909,8 +992,7 @@ def page_salty_preference():
     
     with col2:
         if st.button("✅ 제출하기", type="primary", key="submit", use_container_width=True):
-            if salty_preference:
-                st.session_state.responses['salty_preference'] = salty_preference
+            if current_value:
                 st.session_state.page = 4
                 st.rerun()
             else:
