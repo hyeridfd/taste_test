@@ -545,15 +545,15 @@ def page_intro():
     """, unsafe_allow_html=True)
     
     st.markdown("""
-    본 테스트와 관련하여 궁금하신 점이나 문의사항이 있으시면, 
-    아래에 제시된 연구자의 이메일로 문의해 주십시오.
+    #본 테스트와 관련하여 궁금하신 점이나 문의사항이 있으시면, 
+    # 아래에 제시된 연구자의 이메일로 문의해 주십시오.
     
-    ---
+    # ---
     
-    **📧 연구자 연락처**:
-    - 류혜리 (fwm825@snu.ac.kr)
-    - 유정연 (98you21@snu.ac.kr)
-    """)
+    # **📧 연구자 연락처**:
+    # - 류혜리 (fwm825@snu.ac.kr)
+    # - 류혜리 (98you21@snu.ac.kr)
+    # """)
     
     st.markdown("### 📧 시작하기")
     email = st.text_input("이메일 주소를 입력해주세요 *", placeholder="example@email.com", key="email_input")
@@ -636,7 +636,7 @@ def page_sweet_preference():
     st.markdown("""
     <div style="text-align: center; padding: 1rem 0;">
         <h1>🍑 단맛 선호도 조사</h1>
-        <p style="color: #1976D2; font-size: 1.1rem;">복숭아 음료 테스트</p>
+        #<p style="color: #1976D2; font-size: 1.1rem;">복숭아 음료 테스트</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -690,7 +690,7 @@ def page_salty_preference():
     st.markdown("""
     <div style="text-align: center; padding: 1rem 0;">
         <h1>🥣 짠맛 선호도 조사</h1>
-        <p style="color: #D32F2F; font-size: 1.1rem;">콩나물국 테스트</p>
+        #<p style="color: #D32F2F; font-size: 1.1rem;">콩나물국 테스트</p>#
     </div>
     """, unsafe_allow_html=True)
     
