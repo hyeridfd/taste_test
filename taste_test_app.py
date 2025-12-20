@@ -581,8 +581,10 @@ st.markdown("""
         /* 시료 선택 모바일 최적화 - 3열 2행 그리드 */
         div[data-testid="stRadio"]:has(input[id*="sweet_input"]) > div,
         div[data-testid="stRadio"]:has(input[id*="salty_input"]) > div {
+            display: grid !important;
             grid-template-columns: repeat(3, 1fr) !important;
             grid-template-rows: auto auto !important;
+            justify-items: center !important;
             gap: 1rem !important;
             padding: 1.5rem 0.5rem !important;
         }
