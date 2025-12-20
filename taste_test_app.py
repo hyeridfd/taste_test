@@ -59,6 +59,7 @@ def insert_taste_response(response_data: dict):
     row = {
         "이메일": response_data.get("email", ""),
         "성명": response_data.get("name", ""),
+        "소속": response_data.get("affiliation", ""),
         "성별": response_data.get("gender", ""),
         "나이": response_data.get("age", 0),
         "신장": response_data.get("height", 0),
