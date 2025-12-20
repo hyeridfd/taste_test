@@ -578,43 +578,43 @@ st.markdown("""
             flex-direction: column !important;
         }
         
-        /* 시료 선택 모바일 최적화 - 2열 그리드 */
+        /* 시료 선택 모바일 최적화 - 3열 2행 그리드 */
         div[data-testid="stRadio"]:has(input[id*="sweet_input"]) > div,
         div[data-testid="stRadio"]:has(input[id*="salty_input"]) > div {
-            grid-template-columns: repeat(2, 1fr) !important;
-            grid-template-rows: auto auto auto !important;
-            gap: 1.5rem !important;
-            padding: 2rem 1rem !important;
+            grid-template-columns: repeat(3, 1fr) !important;
+            grid-template-rows: auto auto !important;
+            gap: 1rem !important;
+            padding: 1.5rem 0.5rem !important;
         }
         
-        /* 5번째 항목 모바일에서 중앙 배치 */
+        /* 5번째 항목 모바일에서도 중앙 배치 */
         div[data-testid="stRadio"]:has(input[id*="sweet_input"]) > div > label:nth-child(5),
         div[data-testid="stRadio"]:has(input[id*="salty_input"]) > div > label:nth-child(5) {
-            grid-column: 1 / 3 !important;
+            grid-column: 2 / 3 !important;
             justify-self: center !important;
         }
         
         div[data-testid="stRadio"]:has(input[id*="sweet_input"]) > div > label,
         div[data-testid="stRadio"]:has(input[id*="salty_input"]) > div > label {
-            min-width: 100px !important;
-            min-height: 180px !important;
+            min-width: 85px !important;
+            min-height: 160px !important;
         }
         
         div[data-testid="stRadio"]:has(input[id*="sweet_input"]) > div > label::before,
         div[data-testid="stRadio"]:has(input[id*="salty_input"]) > div > label::before {
-            width: 75px;
-            height: 100px;
+            width: 70px;
+            height: 95px;
         }
         
         div[data-testid="stRadio"]:has(input[id*="sweet_input"]) > div > label > div,
         div[data-testid="stRadio"]:has(input[id*="salty_input"]) > div > label > div {
-            font-size: 2.8rem !important;
-            margin-top: 110px !important;
+            font-size: 2.5rem !important;
+            margin-top: 105px !important;
         }
         
         div[data-testid="stRadio"]:has(input[id*="sweet_input"]) > div > label:has(input:checked) > div,
         div[data-testid="stRadio"]:has(input[id*="salty_input"]) > div > label:has(input:checked) > div {
-            font-size: 3.2rem !important;
+            font-size: 2.8rem !important;
         }
         
         /* 성별 선택 모바일 최적화 */
