@@ -818,7 +818,6 @@ def page_sweet_preference():
     st.markdown("""
     <div style="text-align: center; padding: 1rem 0;">
         <h1>🍑 단맛 선호도 조사</h1>
-        <p style="color: #6B9AB8; font-size: 1.1rem;">복숭아 음료 테스트</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -828,16 +827,16 @@ def page_sweet_preference():
                 margin: 2rem 0; box-shadow: 0 4px 12px rgba(107, 154, 184, 0.15);">
         <h4 style="color: #4A7899; margin-bottom: 1rem;">🔵 파란 글씨 표시된 시료</h4>
         <p style="font-size: 1.05rem; line-height: 1.8; color: #4A4A4A;">
-            <strong>• 복숭아 음료를 마신다고 생각하면서</strong>,<br>
+            <strong>복숭아 음료를 마신다고 생각하면서</strong>,<br>
             시료 순서대로 <strong>(1 → 2 → 3 → 4 → 5)</strong> 맛을 보고<br>
-            <strong style="color: #4A7899;">가장 높은 선호도의 시료를 하나만 체크</strong>해주세요 ✓
+            <strong style="color: #4A7899;">가장 높은 선호도의 시료를 하나만 체크</strong>해주세요
         </p>
     </div>
     """, unsafe_allow_html=True)
     
     st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("### 🧪 시료 선택")
-    st.markdown("**음료수를 마신다고 생각했을 때, 가장 선호하는 시료를 선택해주세요 ***")
+    st.markdown("음료수를 마신다고 생각했을 때, 가장 선호하는 시료를 선택해주세요")
     
     # 현재 선택된 값
     current_value = st.session_state.responses.get('sweet_preference', None)
@@ -905,7 +904,6 @@ def page_salty_preference():
     st.markdown("""
     <div style="text-align: center; padding: 1rem 0;">
         <h1>🥣 짠맛 선호도 조사</h1>
-        <p style="color: #C89B8C; font-size: 1.1rem;">콩나물국 테스트</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -915,16 +913,16 @@ def page_salty_preference():
                 margin: 2rem 0; box-shadow: 0 4px 12px rgba(200, 155, 140, 0.15);">
         <h4 style="color: #A67C6D; margin-bottom: 1rem;">🔴 빨간 글씨 표시된 시료</h4>
         <p style="font-size: 1.05rem; line-height: 1.8; color: #4A4A4A;">
-            <strong>• 콩나물국을 먹는다고 생각하면서</strong>,<br>
+            <strong>콩나물국을 먹는다고 생각하면서</strong>,<br>
             시료 순서대로 <strong>(1 → 2 → 3 → 4 → 5)</strong> 맛을 보고<br>
-            <strong style="color: #A67C6D;">가장 높은 선호도의 시료를 하나만 체크</strong>해주세요 ✓
+            <strong style="color: #A67C6D;">가장 높은 선호도의 시료를 하나만 체크</strong>해주세요
         </p>
     </div>
     """, unsafe_allow_html=True)
     
     st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("### 🧪 시료 선택")
-    st.markdown("**콩나물국을 먹는다고 생각했을 때, 가장 선호하는 시료를 선택해주세요 ***")
+    st.markdown("콩나물국을 먹는다고 생각했을 때, 가장 선호하는 시료를 선택해주세요")
     
     # 현재 선택된 값
     current_value = st.session_state.responses.get('salty_preference', None)
