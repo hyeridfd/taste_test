@@ -68,9 +68,14 @@ st.set_page_config(
 # CSS 스타일링 - 웰니스 & 자연 테마 + 실린더 디자인
 st.markdown("""
     <style>
-    /* 전체 배경 - 부드러운 아이보리/베이지 */
+    /* 전체 배경 - 자연스러운 연한 민트/초록 */
     .stApp {
-        background-color: #F5F3EF;
+        background: linear-gradient(180deg, 
+            #F0F8F5 0%,
+            #E8F5F0 50%,
+            #F0F8F5 100%
+        );
+        background-attachment: fixed;
     }
     
     /* 메인 컨테이너 */
@@ -430,7 +435,7 @@ st.markdown("""
     
     /* 사이드바 스타일 */
     [data-testid="stSidebar"] {
-        background: #F0F7F4;
+        background: linear-gradient(180deg, #E8F5F0 0%, #D5EDE5 100%);
     }
     
     /* 데이터프레임 스타일 */
@@ -688,6 +693,7 @@ def page_sweet_preference():
     st.markdown("""
     <div style="text-align: center; padding: 1rem 0;">
         <h1>🍑 단맛 선호도 조사</h1>
+        <p style="color: #6B9AB8; font-size: 1.1rem;">복숭아 음료 테스트</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -741,6 +747,7 @@ def page_salty_preference():
     st.markdown("""
     <div style="text-align: center; padding: 1rem 0;">
         <h1>🥣 짠맛 선호도 조사</h1>
+        <p style="color: #C89B8C; font-size: 1.1rem;">콩나물국 테스트</p>
     </div>
     """, unsafe_allow_html=True)
     
