@@ -581,11 +581,8 @@ def page_basic_info():
     
     # 성별
     st.markdown("#### ⚥ 성별 *")
-    gender = st.radio("성별 선택", ["남", "여"], 
-                     index=0 if st.session_state.responses.get('gender', '남') == '남' else 1,
-                     horizontal=True,
-                     label_visibility="collapsed",
-                     key="gender_input")
+    gender = st.radio("성별 *", ["남", "여"], 
+                         index=0 if st.session_state.responses.get('gender', '남') == '남' else 1)
     
     st.markdown("---")
     
