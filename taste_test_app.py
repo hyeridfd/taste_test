@@ -57,7 +57,6 @@ def fetch_taste_responses_df() -> pd.DataFrame:
     return pd.DataFrame(res.data or [])
 
 # ===================================================================
-
 # 페이지 설정
 st.set_page_config(
     page_title="평창 웰니스 클래스 - 미각 MPTI",
@@ -66,11 +65,6 @@ st.set_page_config(
 )
 
 # CSS 스타일링 - 개선된 디자인
-st.markdown("""
-    <style>
-    /* 전체 배경 - 파스텔 그라데이션 */
-    # CSS 스타일링 부분의 배경 섹션을 다음과 같이 수정:
-
 st.markdown("""
     <style>
     /* 전체 배경 - 자연스러운 연한 연두색 */
@@ -84,7 +78,7 @@ st.markdown("""
         );
         background-attachment: fixed;
     }
-
+    
     /* 메인 컨테이너 */
     .main {
         padding: 2rem;
