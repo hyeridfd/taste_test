@@ -913,8 +913,8 @@ def page_salty_preference():
                 margin: 2rem 0; box-shadow: 0 4px 12px rgba(200, 155, 140, 0.15);">
         <h4 style="color: #A67C6D; margin-bottom: 1rem;">🔴 빨간 글씨 표시된 시료</h4>
         <p style="font-size: 1.05rem; line-height: 1.8; color: #4A4A4A;">
-            <strong>콩나물국을 먹는다고 생각하면서</strong>,<br>
-            시료 순서대로 <strong>(1 → 2 → 3 → 4 → 5)</strong> 맛을 보고<br>
+            <strong>콩나물국을 먹는다고 생각하면서</strong>,
+            시료 순서대로 <strong>(1 → 2 → 3 → 4 → 5)</strong> 맛을 보고
             <strong style="color: #A67C6D;">가장 높은 선호도의 시료를 하나만 체크</strong>해주세요
         </p>
     </div>
