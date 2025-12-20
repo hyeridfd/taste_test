@@ -115,46 +115,73 @@ st.markdown("""
         margin-bottom: 1.5rem;
     }
     
-    /* 라디오 버튼 컨테이너 스타일 - 너비에 맞게 조정 */
+    /* 라디오 버튼 컨테이너 스타일 - 카드형 디자인 */
     div[data-testid="stRadio"] > div {
         background: transparent;
-        padding: 1rem;
+        padding: 1.5rem 1rem;
         display: flex;
-        justify-content: space-between;
-        gap: 2rem;
+        justify-content: center;
+        gap: 1.5rem;
         max-width: 100%;
+        flex-wrap: wrap;
     }
     
-    /* 각 라디오 버튼 아이템 - 크기 확대 */
+    /* 각 라디오 버튼 아이템 - 비커/실린더 디자인 */
     div[data-testid="stRadio"] > div > label {
         background: white;
-        border: 4px solid #E0E0E0;
+        border: 3px solid #E0E0E0;
         border-radius: 20px;
         padding: 2rem 1.5rem;
         cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-width: 140px;
-        min-height: 160px;
-        flex: 1;
+        min-width: 150px;
+        min-height: 200px;
+        position: relative;
+        overflow: hidden;
     }
     
+    /* 호버 효과 */
     div[data-testid="stRadio"] > div > label:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-        border-color: #9E9E9E;
+        transform: translateY(-12px) scale(1.03);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+        border-color: #BDBDBD;
     }
     
-    /* 선택된 라디오 버튼 - 더 강한 강조 효과 */
+    /* 배경 애니메이션 효과 */
+    div[data-testid="stRadio"] > div > label::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, transparent 0%, rgba(66, 165, 245, 0.1) 100%);
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        z-index: 0;
+    }
+    
+    div[data-testid="stRadio"] > div > label:hover::before {
+        opacity: 1;
+    }
+    
+    /* 선택된 라디오 버튼 - 강한 시각적 피드백 */
     div[data-testid="stRadio"] > div > label:has(input:checked) {
         background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
         border: 4px solid #4CAF50;
-        box-shadow: 0 12px 35px rgba(76, 175, 80, 0.4);
-        transform: translateY(-12px) scale(1.05);
+        box-shadow: 0 16px 48px rgba(76, 175, 80, 0.4),
+                    0 0 0 4px rgba(76, 175, 80, 0.1);
+        transform: translateY(-16px) scale(1.08);
+    }
+    
+    div[data-testid="stRadio"] > div > label:has(input:checked)::before {
+        background: linear-gradient(135deg, rgba(76, 175, 80, 0.15) 0%, rgba(56, 142, 60, 0.1) 100%);
+        opacity: 1;
     }
     
     /* 라디오 버튼 숨기기 */
@@ -162,18 +189,55 @@ st.markdown("""
         display: none;
     }
     
-    /* 라디오 버튼 텍스트 스타일 - 크기 확대 */
+    /* 시료 번호 텍스트 스타일 */
     div[data-testid="stRadio"] > div > label > div {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: #424242;
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: #757575;
         margin-top: 1rem;
         line-height: 1;
+        position: relative;
+        z-index: 1;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s ease;
+    }
+    
+    div[data-testid="stRadio"] > div > label:hover > div {
+        color: #616161;
+        transform: scale(1.1);
     }
     
     div[data-testid="stRadio"] > div > label:has(input:checked) > div {
         color: #2E7D32;
+        font-size: 4rem;
+        text-shadow: 3px 3px 6px rgba(46, 125, 50, 0.2);
+        animation: pulse 0.6s ease-in-out;
+    }
+    
+    /* 펄스 애니메이션 */
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.15); }
+    }
+    
+    /* 시료 아이콘 추가 */
+    div[data-testid="stRadio"] > div > label::after {
+        content: '🧪';
         font-size: 3rem;
+        position: absolute;
+        top: 1.5rem;
+        opacity: 0.3;
+        transition: all 0.4s ease;
+    }
+    
+    div[data-testid="stRadio"] > div > label:hover::after {
+        opacity: 0.5;
+        transform: scale(1.1) rotate(10deg);
+    }
+    
+    div[data-testid="stRadio"] > div > label:has(input:checked)::after {
+        opacity: 0.8;
+        transform: scale(1.2) rotate(0deg);
     }
     
     /* 입력 필드 스타일 */
@@ -406,67 +470,24 @@ st.markdown("""
         padding-top: 3rem;
     }
     
-    /* 실린더 아이콘 CSS */
-    .cylinder-icon {
-        width: 80px;
-        height: 100px;
-        position: relative;
-        margin: 0 auto 1rem auto;
-    }
-    
-    .cylinder-top {
-        width: 80px;
-        height: 20px;
-        background: linear-gradient(180deg, #E0E0E0 0%, #BDBDBD 100%);
-        border-radius: 50%;
-        position: absolute;
-        top: 0;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    }
-    
-    .cylinder-body {
-        width: 80px;
-        height: 80px;
-        background: linear-gradient(90deg, #F5F5F5 0%, #EEEEEE 50%, #F5F5F5 100%);
-        position: absolute;
-        top: 10px;
-        border-radius: 0 0 8px 8px;
-        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    
-    .cylinder-bottom {
-        width: 80px;
-        height: 20px;
-        background: linear-gradient(180deg, #BDBDBD 0%, #9E9E9E 100%);
-        border-radius: 50%;
-        position: absolute;
-        bottom: 0;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    }
-    
-    /* 선택된 실린더 색상 */
-    div[data-testid="stRadio"] > div > label:has(input:checked) .cylinder-top {
-        background: linear-gradient(180deg, #A5D6A7 0%, #81C784 100%);
-    }
-    
-    div[data-testid="stRadio"] > div > label:has(input:checked) .cylinder-body {
-        background: linear-gradient(90deg, #C8E6C9 0%, #A5D6A7 50%, #C8E6C9 100%);
-    }
-    
-    div[data-testid="stRadio"] > div > label:has(input:checked) .cylinder-bottom {
-        background: linear-gradient(180deg, #81C784 0%, #66BB6A 100%);
-    }
-    
     /* 반응형 디자인 */
     @media (max-width: 768px) {
         div[data-testid="stRadio"] > div {
-            flex-wrap: wrap;
             gap: 1rem;
         }
         
         div[data-testid="stRadio"] > div > label {
-            min-width: 120px;
-            min-height: 140px;
+            min-width: 130px;
+            min-height: 180px;
+            padding: 1.5rem 1rem;
+        }
+        
+        div[data-testid="stRadio"] > div > label > div {
+            font-size: 3rem;
+        }
+        
+        div[data-testid="stRadio"] > div > label:has(input:checked) > div {
+            font-size: 3.5rem;
         }
     }
     </style>
@@ -645,8 +666,7 @@ def page_sweet_preference():
         index=None if current_value is None else ["1", "2", "3", "4", "5"].index(current_value),
         horizontal=True,
         key="sweet_input",
-        label_visibility="collapsed",
-        format_func=lambda x: f"🧪 {x}"
+        label_visibility="collapsed"
     )
     
     st.markdown("---")
@@ -700,8 +720,7 @@ def page_salty_preference():
         index=None if current_value is None else ["1", "2", "3", "4", "5"].index(current_value),
         horizontal=True,
         key="salty_input",
-        label_visibility="collapsed",
-        format_func=lambda x: f"🧪 {x}"
+        label_visibility="collapsed"
     )
     
     st.markdown("---")
