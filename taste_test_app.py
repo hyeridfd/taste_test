@@ -105,6 +105,225 @@ st.markdown("""
         color: #388E3C;
         font-weight: 600;
     }
+
+
+
+    /* ========== 성별 선택용 심플 스타일 (gender_input) ========== */
+    div[data-testid="stRadio"][data-baseweb="radio"] {
+        background: rgba(255, 255, 255, 0.5);
+        padding: 0.8rem;
+        border-radius: 10px;
+    }
+    
+    div[data-testid="stRadio"][data-baseweb="radio"] > div {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-start;
+    }
+    
+    div[data-testid="stRadio"][data-baseweb="radio"] > div > label {
+        background: white;
+        border: 2px solid #E0E0E0;
+        border-radius: 8px;
+        padding: 0.8rem 2.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+        flex: none;
+        min-width: 100px;
+        text-align: center;
+    }
+    
+    div[data-testid="stRadio"][data-baseweb="radio"] > div > label:hover {
+        border-color: #4CAF50;
+        box-shadow: 0 3px 10px rgba(76, 175, 80, 0.15);
+        transform: translateY(-1px);
+    }
+    
+    div[data-testid="stRadio"][data-baseweb="radio"] > div > label:has(input:checked) {
+        background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+        border: 2px solid #4CAF50;
+        box-shadow: 0 3px 12px rgba(76, 175, 80, 0.25);
+    }
+    
+    div[data-testid="stRadio"][data-baseweb="radio"] input[type="radio"] {
+        display: none;
+    }
+    
+    div[data-testid="stRadio"][data-baseweb="radio"] > div > label > div {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #424242;
+    }
+    
+    div[data-testid="stRadio"][data-baseweb="radio"] > div > label:has(input:checked) > div {
+        color: #2E7D32;
+    }
+    
+    /* ========== 시료 선택용 큰 스타일 (sweet_input, salty_input) ========== */
+    /* 라디오 버튼 커스텀 스타일 */
+    div[data-testid="stRadio"] > label {
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: #2E7D32;
+        margin-bottom: 1.5rem;
+    }
+    
+    /* 라디오 버튼 컨테이너 스타일 - 카드형 디자인 */
+    div[data-testid="stRadio"] > div {
+        background: transparent;
+        padding: 1.5rem 1rem;
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        max-width: 100%;
+        flex-wrap: wrap;
+    }
+    
+    /* 각 라디오 버튼 아이템 - 비커/실린더 디자인 */
+    div[data-testid="stRadio"] > div > label {
+        background: white;
+        border: 3px solid #E0E0E0;
+        border-radius: 20px;
+        padding: 2rem 1.5rem;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-width: 150px;
+        min-height: 200px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    /* 호버 효과 */
+    div[data-testid="stRadio"] > div > label:hover {
+        transform: translateY(-12px) scale(1.03);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+        border-color: #BDBDBD;
+    }
+    
+    /* 배경 애니메이션 효과 */
+    div[data-testid="stRadio"] > div > label::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, transparent 0%, rgba(66, 165, 245, 0.1) 100%);
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        z-index: 0;
+    }
+    
+    div[data-testid="stRadio"] > div > label:hover::before {
+        opacity: 1;
+    }
+    
+    /* 선택된 라디오 버튼 - 강한 시각적 피드백 */
+    div[data-testid="stRadio"] > div > label:has(input:checked) {
+        background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+        border: 4px solid #4CAF50;
+        box-shadow: 0 16px 48px rgba(76, 175, 80, 0.4),
+                    0 0 0 4px rgba(76, 175, 80, 0.1);
+        transform: translateY(-16px) scale(1.08);
+    }
+    
+    div[data-testid="stRadio"] > div > label:has(input:checked)::before {
+        background: linear-gradient(135deg, rgba(76, 175, 80, 0.15) 0%, rgba(56, 142, 60, 0.1) 100%);
+        opacity: 1;
+    }
+    
+    /* 라디오 버튼 숨기기 */
+    div[data-testid="stRadio"] input[type="radio"] {
+        display: none;
+    }
+    
+    /* 시료 번호 텍스트 스타일 */
+    div[data-testid="stRadio"] > div > label > div {
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: #757575;
+        margin-top: 1rem;
+        line-height: 1;
+        position: relative;
+        z-index: 1;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s ease;
+    }
+    
+    div[data-testid="stRadio"] > div > label:hover > div {
+        color: #616161;
+        transform: scale(1.1);
+    }
+    
+    div[data-testid="stRadio"] > div > label:has(input:checked) > div {
+        color: #2E7D32;
+        font-size: 4rem;
+        text-shadow: 3px 3px 6px rgba(46, 125, 50, 0.2);
+        animation: pulse 0.6s ease-in-out;
+    }
+    
+    /* 펄스 애니메이션 */
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.15); }
+    }
+    /* ========== 성별 선택용 심플 스타일 (gender_input) ========== */
+    div[data-testid="stRadio"][data-baseweb="radio"] {
+        background: rgba(255, 255, 255, 0.5);
+        padding: 0.8rem;
+        border-radius: 10px;
+    }
+    
+    div[data-testid="stRadio"][data-baseweb="radio"] > div {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-start;
+    }
+    
+    div[data-testid="stRadio"][data-baseweb="radio"] > div > label {
+        background: white;
+        border: 2px solid #E0E0E0;
+        border-radius: 8px;
+        padding: 0.8rem 2.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+        flex: none;
+        min-width: 100px;
+        text-align: center;
+    }
+    
+    div[data-testid="stRadio"][data-baseweb="radio"] > div > label:hover {
+        border-color: #4CAF50;
+        box-shadow: 0 3px 10px rgba(76, 175, 80, 0.15);
+        transform: translateY(-1px);
+    }
+    
+    div[data-testid="stRadio"][data-baseweb="radio"] > div > label:has(input:checked) {
+        background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+        border: 2px solid #4CAF50;
+        box-shadow: 0 3px 12px rgba(76, 175, 80, 0.25);
+    }
+    
+    div[data-testid="stRadio"][data-baseweb="radio"] input[type="radio"] {
+        display: none;
+    }
+    
+    div[data-testid="stRadio"][data-baseweb="radio"] > div > label > div {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #424242;
+    }
+    
+    div[data-testid="stRadio"][data-baseweb="radio"] > div > label:has(input:checked) > div {
+        color: #2E7D32;
+    }
     
     /* 라디오 버튼 커스텀 스타일 */
     div[data-testid="stRadio"] > label {
