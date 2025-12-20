@@ -518,10 +518,63 @@ st.markdown("""
     
     /* 반응형 디자인 */
     @media (max-width: 768px) {
+        /* 메인 컨테이너 모바일 최적화 */
+        .main {
+            padding: 1rem;
+        }
+        
+        .main .block-container {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+        
+        /* 헤더 크기 조정 */
+        h1 {
+            font-size: 2rem !important;
+        }
+        
+        h2 {
+            font-size: 1.5rem !important;
+        }
+        
+        h3 {
+            font-size: 1.3rem !important;
+        }
+        
+        h4 {
+            font-size: 1.1rem !important;
+        }
+        
+        /* 텍스트 색상 명시 */
+        p, span, div, label {
+            color: #2E5945 !important;
+        }
+        
+        /* 입력 필드 모바일 최적화 */
+        .stTextInput > div > div > input,
+        .stNumberInput > div > div > input {
+            font-size: 16px !important;
+            padding: 0.75rem !important;
+        }
+        
+        /* 버튼 크기 조정 */
+        .stButton > button {
+            padding: 1rem 1.5rem !important;
+            font-size: 1rem !important;
+            width: 100% !important;
+        }
+        
+        /* 컬럼 모바일에서 세로 정렬 */
+        .row-widget.stHorizontal {
+            flex-direction: column !important;
+        }
+        
+        /* 시료 선택 모바일 최적화 */
         div[data-testid="stRadio"]:has(input[id*="sweet_input"]) > div,
         div[data-testid="stRadio"]:has(input[id*="salty_input"]) > div {
             gap: 1.5rem !important;
             padding: 2rem 1rem !important;
+            flex-wrap: wrap !important;
         }
         
         div[data-testid="stRadio"]:has(input[id*="sweet_input"]) > div > label,
@@ -546,6 +599,53 @@ st.markdown("""
         div[data-testid="stRadio"]:has(input[id*="salty_input"]) > div > label:has(input:checked) > div {
             font-size: 3.2rem !important;
         }
+        
+        /* 성별 선택 모바일 최적화 */
+        div[data-testid="stRadio"] > div > label {
+            min-width: 120px !important;
+            padding: 1rem 2rem !important;
+        }
+        
+        /* 박스 패딩 조정 */
+        .blue-box, .red-box, .green-box {
+            padding: 1.5rem !important;
+            margin: 1.5rem 0 !important;
+        }
+        
+        /* 통계 카드 모바일 */
+        .stat-card {
+            margin-bottom: 1rem;
+        }
+        
+        /* 사이드바 모바일 */
+        [data-testid="stSidebar"] {
+            width: 100% !important;
+        }
+        
+        /* 데이터프레임 스크롤 */
+        .dataframe {
+            font-size: 0.85rem !important;
+        }
+    }
+    
+    /* 추가 텍스트 색상 명시 */
+    .stMarkdown, .stMarkdown p, .stMarkdown div, .stMarkdown span {
+        color: #2E5945;
+    }
+    
+    /* 라벨 텍스트 색상 */
+    label[data-testid="stWidgetLabel"] {
+        color: #2E5945 !important;
+    }
+    
+    /* 입력 필드 텍스트 */
+    input, textarea, select {
+        color: #2E5945 !important;
+    }
+    
+    /* 라디오 버튼 텍스트 */
+    div[data-testid="stRadio"] label {
+        color: #2E5945 !important;
     }
     </style>
 """, unsafe_allow_html=True)
