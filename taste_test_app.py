@@ -10,22 +10,46 @@ import matplotlib as mpl
 import matplotlib.font_manager as fm
 
 def set_korean_font():
-    # 1) 프로젝트에 포함한 폰트 우선
     font_candidates = [
         os.path.join(os.path.dirname(__file__), "fonts", "NanumGothic.ttf"),
-        "fonts/NanumGothic.ttf",
-        "/usr/share/fonts/truetype/nanum/NanumGothic.ttf",  # 리눅스에 설치돼있는 경우
+        os.path.join(os.getcwd(), "fonts", "NanumGothic.ttf"),
+        "/usr/share/fonts/truetype/nanum/NanumGothic.ttf",
+        "/usr/share/fonts/truetype/nanum/NanumGothicBold.ttf",
     ]
 
+    chosen = None
     for fp in font_candidates:
-        if os.path.exists(fp):
-            fm.fontManager.addfont(fp)
-            mpl.rcParams["font.family"] = fm.FontProperties(fname=fp).get_name()
-            break
+        if not os.path.exists(fp):
+            continue
 
-    mpl.rcParams["axes.unicode_minus"] = False  # 마이너스 기호 깨짐 방지
+        # ---- 진단 로그 (Streamlit Cloud 로그에서 확인 가능) ----
+        try:
+            size = os.path.getsize(fp)
+            print(f"[FONT] found: {fp} ({size} bytes)")
+        except Exception as e:
+            print(f"[FONT] found but cannot stat: {fp} / {e}")
+
+        # ---- 폰트 등록 시도 ----
+        try:
+            fm.fontManager.addfont(fp)  # 여기서 FT2Font 에러가 나면 폰트가 깨졌거나 포인터일 확률 큼
+            font_name = fm.FontProperties(fname=fp).get_name()
+            mpl.rcParams["font.family"] = font_name
+            mpl.rcParams["axes.unicode_minus"] = False
+            chosen = fp
+            print(f"[FONT] activated: {font_name} from {fp}")
+            break
+        except Exception as e:
+            print(f"[FONT] failed to load {fp}: {e}")
+            continue
+
+    # 폰트 못 잡아도 앱은 계속 실행 (한글은 네모일 수 있음)
+    if chosen is None:
+        mpl.rcParams["font.family"] = "DejaVu Sans"
+        mpl.rcParams["axes.unicode_minus"] = False
+        print("[FONT] fallback to DejaVu Sans (Korean may not render)")
 
 set_korean_font()
+
 
 # ===== Supabase helpers ======================================
 from supabase import create_client, Client
