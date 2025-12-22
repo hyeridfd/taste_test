@@ -1188,20 +1188,45 @@ def donut_chart_counts(series: pd.Series, title: str):
     counts = s.value_counts().sort_index()
 
     fig, ax = plt.subplots(figsize=(5, 5))
+    
+    # 현재 설정된 한글 폰트명 가져오기
+    font_name = mpl.rcParams.get("font.family", ["DejaVu Sans"])
+    if isinstance(font_name, list):
+        font_name = font_name[0]
+    
     wedges, texts, autotexts = ax.pie(
         counts.values,
         labels=counts.index,
         autopct=lambda p: f"{p:.1f}%",
-        startangle=90
+        startangle=90,
+        textprops={'fontname': font_name, 'fontsize': 11, 'weight': 'bold'}
     )
+    
+    # 라벨 텍스트 스타일 설정
+    for text in texts:
+        text.set_fontsize(13)
+        text.set_weight('bold')
+        text.set_color('#2E5945')
+        text.set_fontname(font_name)  # 명시적으로 폰트 설정
+    
+    # 퍼센트 텍스트 스타일
+    for autotext in autotexts:
+        autotext.set_color('white')
+        autotext.set_fontsize(11)
+        autotext.set_weight('bold')
+    
     # 도넛 효과
     centre_circle = plt.Circle((0, 0), 0.65, fc="white")
     fig.gca().add_artist(centre_circle)
 
-    ax.set_title(title)
+    # 제목에도 폰트 설정
+    ax.set_title(title, fontname=font_name, fontsize=14, weight='bold', color='#2E5945', pad=20)
     ax.axis("equal")
+    
+    # 한글 마이너스 기호 처리
+    mpl.rcParams["axes.unicode_minus"] = False
 
-    st.pyplot(fig)
+    st.pyplot(fig, use_container_width=True)
 
     # 숫자 테이블도 같이 보면 좋아서 같이 출력
     st.dataframe(
