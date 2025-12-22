@@ -11,10 +11,16 @@ import matplotlib.font_manager as fm
 
 def set_korean_font():
     font_candidates = [
+        # 로컬 fonts 폴더에서 먼저 찾기 (깃허브 구조)
         os.path.join(os.path.dirname(__file__), "fonts", "NanumGothic.ttf"),
         os.path.join(os.getcwd(), "fonts", "NanumGothic.ttf"),
+        # 시스템 폰트 경로
         "/usr/share/fonts/truetype/nanum/NanumGothic.ttf",
         "/usr/share/fonts/truetype/nanum/NanumGothicBold.ttf",
+        "/usr/share/fonts/noto-cjk/NotoSansCJK-Regular.ttc",
+        # 추가 시스템 경로
+        "/System/Library/Fonts/AppleGothic.ttf",  # macOS
+        "C:\\Windows\\Fonts\\malgun.ttf",  # Windows
     ]
 
     chosen = None
@@ -31,7 +37,7 @@ def set_korean_font():
 
         # ---- 폰트 등록 시도 ----
         try:
-            fm.fontManager.addfont(fp)  # 여기서 FT2Font 에러가 나면 폰트가 깨졌거나 포인터일 확률 큼
+            fm.fontManager.addfont(fp)
             font_name = fm.FontProperties(fname=fp).get_name()
             mpl.rcParams["font.family"] = font_name
             mpl.rcParams["axes.unicode_minus"] = False
@@ -42,11 +48,36 @@ def set_korean_font():
             print(f"[FONT] failed to load {fp}: {e}")
             continue
 
-    # 폰트 못 잡아도 앱은 계속 실행 (한글은 네모일 수 있음)
+    # 폰트 못 잡아도 앱은 계속 실행
     if chosen is None:
-        mpl.rcParams["font.family"] = "DejaVu Sans"
-        mpl.rcParams["axes.unicode_minus"] = False
-        print("[FONT] fallback to DejaVu Sans (Korean may not render)")
+        # 폴백: 시스템에 있는 한글 폰트 찾기
+        import subprocess
+        try:
+            result = subprocess.run(['fc-list', ':', 'file', 'family'], 
+                                  capture_output=True, text=True, timeout=5)
+            fonts = result.stdout.split('\n')
+            for font_line in fonts:
+                if 'Noto' in font_line or 'Nanum' in font_line or '나눔' in font_line:
+                    font_path = font_line.split(':')[0].strip()
+                    if font_path and os.path.exists(font_path):
+                        try:
+                            fm.fontManager.addfont(font_path)
+                            font_name = fm.FontProperties(fname=font_path).get_name()
+                            mpl.rcParams["font.family"] = font_name
+                            mpl.rcParams["axes.unicode_minus"] = False
+                            chosen = font_path
+                            print(f"[FONT] fallback activated: {font_name} from {font_path}")
+                            break
+                        except:
+                            pass
+        except:
+            pass
+        
+        # 최후의 폴백
+        if chosen is None:
+            mpl.rcParams["font.family"] = "DejaVu Sans"
+            mpl.rcParams["axes.unicode_minus"] = False
+            print("[FONT] fallback to DejaVu Sans (Korean may not render)")
 
 set_korean_font()
 
@@ -1178,7 +1209,7 @@ def admin_login():
 
 # 추가
 def donut_chart_counts(series: pd.Series, title: str):
-    """값 분포를 도넛 차트로 시각화"""
+    """값 분포를 도넛 차트로 시각화 - 파스텔 색상"""
     s = series.dropna().astype(str)
     s = s[s != ""]
     if s.empty:
@@ -1188,32 +1219,43 @@ def donut_chart_counts(series: pd.Series, title: str):
     counts = s.value_counts().sort_index()
 
     fig, ax = plt.subplots(figsize=(5, 5))
+    fig.patch.set_facecolor('white')
+    
+    # 파스텔 톤 색상 팔레트 (배경과 어울리게)
+    pastel_colors = ['#A5D6A7', '#C5A5D8', '#FFB6B9', '#FED8B1', '#B4E7FF', 
+                     '#C8E6C9', '#B2DFDB', '#FFCCBC', '#F8BBD0', '#E1BEE7']
+    
+    # 시료 개수에 맞게 색상 할당
+    colors = pastel_colors[:len(counts)] if len(counts) <= len(pastel_colors) else (pastel_colors * (len(counts) // len(pastel_colors) + 1))[:len(counts)]
     
     # 현재 설정된 한글 폰트명 가져오기
     font_name = mpl.rcParams.get("font.family", ["DejaVu Sans"])
     if isinstance(font_name, list):
         font_name = font_name[0]
     
+    # 파이 차트 생성
     wedges, texts, autotexts = ax.pie(
         counts.values,
         labels=counts.index,
         autopct=lambda p: f"{p:.1f}%",
         startangle=90,
+        colors=colors,
         textprops={'fontname': font_name, 'fontsize': 11, 'weight': 'bold'}
     )
     
-    # 라벨 텍스트 스타일 설정
+    # 라벨 텍스트 스타일 설정 (시료 번호)
     for text in texts:
-        text.set_fontsize(13)
+        text.set_fontsize(14)
         text.set_weight('bold')
         text.set_color('#2E5945')
-        text.set_fontname(font_name)  # 명시적으로 폰트 설정
+        text.set_fontname(font_name)
     
-    # 퍼센트 텍스트 스타일
+    # 퍼센트 텍스트 스타일 (어두운 색상으로 가시성 향상)
     for autotext in autotexts:
-        autotext.set_color('white')
-        autotext.set_fontsize(11)
+        autotext.set_color('#2E5945')  # 흰색에서 어두운 초록색으로 변경
+        autotext.set_fontsize(12)
         autotext.set_weight('bold')
+        autotext.set_fontname(font_name)
     
     # 도넛 효과
     centre_circle = plt.Circle((0, 0), 0.65, fc="white")
