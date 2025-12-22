@@ -1032,7 +1032,6 @@ def page_complete():
         <p style="font-size: 1.05rem; line-height: 1.8; color: #4A4A4A;">
             귀하의 소중한 응답이 성공적으로 제출되었습니다.<br><br>
             본 연구에 참여해 주셔서 진심으로 감사드립니다.<br><br>
-            여러분의 데이터는 정밀 식의학 연구 발전에 큰 도움이 될 것입니다. 💚
         </p>
     </div>
     """, unsafe_allow_html=True)
