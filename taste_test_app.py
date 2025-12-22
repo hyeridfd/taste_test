@@ -9,77 +9,77 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import matplotlib.font_manager as fm
 
-def set_korean_font():
-    font_candidates = [
-        # 로컬 fonts 폴더에서 먼저 찾기 (깃허브 구조)
-        os.path.join(os.path.dirname(__file__), "fonts", "NanumGothic.ttf"),
-        os.path.join(os.getcwd(), "fonts", "NanumGothic.ttf"),
-        # 시스템 폰트 경로
-        "/usr/share/fonts/truetype/nanum/NanumGothic.ttf",
-        "/usr/share/fonts/truetype/nanum/NanumGothicBold.ttf",
-        "/usr/share/fonts/noto-cjk/NotoSansCJK-Regular.ttc",
-        # 추가 시스템 경로
-        "/System/Library/Fonts/AppleGothic.ttf",  # macOS
-        "C:\\Windows\\Fonts\\malgun.ttf",  # Windows
-    ]
+# def set_korean_font():
+#     font_candidates = [
+#         # 로컬 fonts 폴더에서 먼저 찾기 (깃허브 구조)
+#         os.path.join(os.path.dirname(__file__), "fonts", "NanumGothic.ttf"),
+#         os.path.join(os.getcwd(), "fonts", "NanumGothic.ttf"),
+#         # 시스템 폰트 경로
+#         "/usr/share/fonts/truetype/nanum/NanumGothic.ttf",
+#         "/usr/share/fonts/truetype/nanum/NanumGothicBold.ttf",
+#         "/usr/share/fonts/noto-cjk/NotoSansCJK-Regular.ttc",
+#         # 추가 시스템 경로
+#         "/System/Library/Fonts/AppleGothic.ttf",  # macOS
+#         "C:\\Windows\\Fonts\\malgun.ttf",  # Windows
+#     ]
 
-    chosen = None
-    for fp in font_candidates:
-        if not os.path.exists(fp):
-            continue
+#     chosen = None
+#     for fp in font_candidates:
+#         if not os.path.exists(fp):
+#             continue
 
-        # ---- 진단 로그 (Streamlit Cloud 로그에서 확인 가능) ----
-        try:
-            size = os.path.getsize(fp)
-            print(f"[FONT] found: {fp} ({size} bytes)")
-        except Exception as e:
-            print(f"[FONT] found but cannot stat: {fp} / {e}")
+#         # ---- 진단 로그 (Streamlit Cloud 로그에서 확인 가능) ----
+#         try:
+#             size = os.path.getsize(fp)
+#             print(f"[FONT] found: {fp} ({size} bytes)")
+#         except Exception as e:
+#             print(f"[FONT] found but cannot stat: {fp} / {e}")
 
-        # ---- 폰트 등록 시도 ----
-        try:
-            fm.fontManager.addfont(fp)
-            font_name = fm.FontProperties(fname=fp).get_name()
-            mpl.rcParams["font.family"] = font_name
-            mpl.rcParams["axes.unicode_minus"] = False
-            chosen = fp
-            print(f"[FONT] activated: {font_name} from {fp}")
-            break
-        except Exception as e:
-            print(f"[FONT] failed to load {fp}: {e}")
-            continue
+#         # ---- 폰트 등록 시도 ----
+#         try:
+#             fm.fontManager.addfont(fp)
+#             font_name = fm.FontProperties(fname=fp).get_name()
+#             mpl.rcParams["font.family"] = font_name
+#             mpl.rcParams["axes.unicode_minus"] = False
+#             chosen = fp
+#             print(f"[FONT] activated: {font_name} from {fp}")
+#             break
+#         except Exception as e:
+#             print(f"[FONT] failed to load {fp}: {e}")
+#             continue
 
-    # 폰트 못 잡아도 앱은 계속 실행
-    if chosen is None:
-        # 폴백: 시스템에 있는 한글 폰트 찾기
-        import subprocess
-        try:
-            result = subprocess.run(['fc-list', ':', 'file', 'family'], 
-                                  capture_output=True, text=True, timeout=5)
-            fonts = result.stdout.split('\n')
-            for font_line in fonts:
-                if 'Noto' in font_line or 'Nanum' in font_line or '나눔' in font_line:
-                    font_path = font_line.split(':')[0].strip()
-                    if font_path and os.path.exists(font_path):
-                        try:
-                            fm.fontManager.addfont(font_path)
-                            font_name = fm.FontProperties(fname=font_path).get_name()
-                            mpl.rcParams["font.family"] = font_name
-                            mpl.rcParams["axes.unicode_minus"] = False
-                            chosen = font_path
-                            print(f"[FONT] fallback activated: {font_name} from {font_path}")
-                            break
-                        except:
-                            pass
-        except:
-            pass
+#     # 폰트 못 잡아도 앱은 계속 실행
+#     if chosen is None:
+#         # 폴백: 시스템에 있는 한글 폰트 찾기
+#         import subprocess
+#         try:
+#             result = subprocess.run(['fc-list', ':', 'file', 'family'], 
+#                                   capture_output=True, text=True, timeout=5)
+#             fonts = result.stdout.split('\n')
+#             for font_line in fonts:
+#                 if 'Noto' in font_line or 'Nanum' in font_line or '나눔' in font_line:
+#                     font_path = font_line.split(':')[0].strip()
+#                     if font_path and os.path.exists(font_path):
+#                         try:
+#                             fm.fontManager.addfont(font_path)
+#                             font_name = fm.FontProperties(fname=font_path).get_name()
+#                             mpl.rcParams["font.family"] = font_name
+#                             mpl.rcParams["axes.unicode_minus"] = False
+#                             chosen = font_path
+#                             print(f"[FONT] fallback activated: {font_name} from {font_path}")
+#                             break
+#                         except:
+#                             pass
+#         except:
+#             pass
         
-        # 최후의 폴백
-        if chosen is None:
-            mpl.rcParams["font.family"] = "DejaVu Sans"
-            mpl.rcParams["axes.unicode_minus"] = False
-            print("[FONT] fallback to DejaVu Sans (Korean may not render)")
+#         # 최후의 폴백
+#         if chosen is None:
+#             mpl.rcParams["font.family"] = "DejaVu Sans"
+#             mpl.rcParams["axes.unicode_minus"] = False
+#             print("[FONT] fallback to DejaVu Sans (Korean may not render)")
 
-set_korean_font()
+# set_korean_font()
 
 # def diagnose_font():
 #     """폰트 설정 상태 진단"""
