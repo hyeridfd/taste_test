@@ -146,6 +146,8 @@ st.set_page_config(
 # CSS 스타일링 - 웰니스 & 자연 테마 + 실린더 디자인
 st.markdown("""
     <style>
+    /* 구글 폰트 임포트 추가 */
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap');
     /* 전체 배경 - 자연스러운 연한 민트/초록 */
     .stApp {
         background: linear-gradient(180deg, 
@@ -154,13 +156,18 @@ st.markdown("""
             #F0F8F5 100%
         );
         background-attachment: fixed;
+        font-family: 'Noto Sans KR', sans-serif !important;  /* 추가 */
     }
-    
+      /* 모든 텍스트 요소에 폰트 적용 */
+    * {
+        font-family: 'Noto Sans KR', sans-serif !important;
+    }
     /* 메인 컨테이너 */
     .main {
         padding: 2rem;
         max-width: 1000px;
         margin: 0 auto;
+        font-family: 'Noto Sans KR', sans-serif !important;  /* 추가 */
     }
     
     /* 메인 블록 컨테이너 */
