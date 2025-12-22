@@ -1431,11 +1431,11 @@ def main():
         
         st.markdown("""
         <div style="font-size: 0.85rem; color: #6B7B6A; padding: 1rem 0;">
-            <p><strong>연구기관</strong></p>
+            <p><strong>🏫 연구기관</strong></p>
             <p>서울대학교<br>정밀푸드솔루션연구실</p>
             <br>
-            <p><strong>문의</strong></p>
-            <p>📞 02-880-4667</p>
+            <p><strong>📞 문의</strong></p>
+            <p>02-880-4667</p>
         </div>
         """, unsafe_allow_html=True)
     
