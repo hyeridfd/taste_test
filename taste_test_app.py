@@ -81,27 +81,27 @@ def set_korean_font():
 
 set_korean_font()
 
-def diagnose_font():
-    """폰트 설정 상태 진단"""
-    st.write("### 🔍 폰트 진단 정보")
+# def diagnose_font():
+#     """폰트 설정 상태 진단"""
+#     st.write("### 🔍 폰트 진단 정보")
     
-    col1, col2 = st.columns(2)
+#     col1, col2 = st.columns(2)
     
-    with col1:
-        st.write("**matplotlib rcParams:**")
-        st.code(f"""
-font.family: {mpl.rcParams['font.family']}
-font.sans-serif: {mpl.rcParams.get('font.sans-serif', 'Not set')}
-axes.unicode_minus: {mpl.rcParams.get('axes.unicode_minus', 'Not set')}
-        """)
+#     with col1:
+#         st.write("**matplotlib rcParams:**")
+#         st.code(f"""
+# font.family: {mpl.rcParams['font.family']}
+# font.sans-serif: {mpl.rcParams.get('font.sans-serif', 'Not set')}
+# axes.unicode_minus: {mpl.rcParams.get('axes.unicode_minus', 'Not set')}
+#         """)
     
-    with col2:
-        st.write("**시스템 폰트:**")
-        available_fonts = sorted(set(f.name for f in mpl.font_manager.fontManager.ttflist))
-        korean_fonts = [f for f in available_fonts if any(
-            c in f for c in ['Noto', 'Nanum', '나눔', 'Gothic']
-        )]
-        st.write(f"찾은 한글 폰트: {', '.join(korean_fonts) if korean_fonts else '❌ 없음'}")
+#     with col2:
+#         st.write("**시스템 폰트:**")
+#         available_fonts = sorted(set(f.name for f in mpl.font_manager.fontManager.ttflist))
+#         korean_fonts = [f for f in available_fonts if any(
+#             c in f for c in ['Noto', 'Nanum', '나눔', 'Gothic']
+#         )]
+#         st.write(f"찾은 한글 폰트: {', '.join(korean_fonts) if korean_fonts else '❌ 없음'}")
         
 # ===== Supabase helpers ======================================
 from supabase import create_client, Client
