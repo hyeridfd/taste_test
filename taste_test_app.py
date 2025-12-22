@@ -765,14 +765,14 @@ def page_basic_info():
     """, unsafe_allow_html=True)
     
     # 성명
-    st.markdown("#### 👤 성명 *")
+    st.markdown("#### 👤 성명")
     name = st.text_input("성명 *", value=st.session_state.responses.get('name', ''), placeholder="홍길동", key="name_input")
     
-    st.markdown("#### 🏫 소속 *")    
+    st.markdown("#### 🏫 소속")    
     affiliation = st.text_input("소속 *", value=st.session_state.responses.get('affiliation', ''), placeholder="예) 서울대학교", key="affiliation_input")
 
     # 성별
-    st.markdown("#### ⚥ 성별 *")
+    st.markdown("#### ⚥ 성별")
     gender = st.radio("성별 선택", ["남", "여"], 
                      index=0 if st.session_state.responses.get('gender', '남') == '남' else 1,
                      horizontal=True,
