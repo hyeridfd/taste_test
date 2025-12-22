@@ -769,7 +769,7 @@ def page_basic_info():
     name = st.text_input("성명 *", value=st.session_state.responses.get('name', ''), placeholder="홍길동", key="name_input")
     
     st.markdown("#### 🏫 소속")    
-    affiliation = st.text_input("소속 *", value=st.session_state.responses.get('affiliation', ''), placeholder="예) 서울대학교", key="affiliation_input")
+    affiliation = st.text_input("소속(학교/기관/기업/교육과정) *", value=st.session_state.responses.get('affiliation', ''), placeholder="예) 서울대학교", key="affiliation_input")
 
     # 성별
     st.markdown("#### ⚥ 성별")
@@ -784,7 +784,7 @@ def page_basic_info():
     
     with col1:
         st.markdown("#### 🎂 나이")
-        age = st.number_input("나이 *", min_value=1, max_value=120, 
+        age = st.number_input("나이(세) *", min_value=1, max_value=120, 
                              value=st.session_state.responses.get('age', 30),
                              label_visibility="collapsed",
                              key="age_input")
