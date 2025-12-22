@@ -766,7 +766,8 @@ def page_basic_info():
     
     # 성명
     st.markdown("### 👤 성명 *")
-    name = st.text_input("👤 성명 *", value=st.session_state.responses.get('name', ''), placeholder="홍길동", key="name_input")
+    name = st.text_input(value=st.session_state.responses.get('name', ''), placeholder="김스누", key="name_input")
+    #name = st.text_input("👤 성명 *", value=st.session_state.responses.get('name', ''), placeholder="홍길동", key="name_input")
     
     affiliation = st.text_input("🏫 소속 *", value=st.session_state.responses.get('affiliation', ''), placeholder="예) 서울대학교", key="affiliation_input")
 
