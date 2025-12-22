@@ -9,78 +9,6 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import matplotlib.font_manager as fm
 
-# def set_korean_font():
-#     font_candidates = [
-#         # 로컬 fonts 폴더에서 먼저 찾기 (깃허브 구조)
-#         os.path.join(os.path.dirname(__file__), "fonts", "NanumGothic.ttf"),
-#         os.path.join(os.getcwd(), "fonts", "NanumGothic.ttf"),
-#         # 시스템 폰트 경로
-#         "/usr/share/fonts/truetype/nanum/NanumGothic.ttf",
-#         "/usr/share/fonts/truetype/nanum/NanumGothicBold.ttf",
-#         "/usr/share/fonts/noto-cjk/NotoSansCJK-Regular.ttc",
-#         # 추가 시스템 경로
-#         "/System/Library/Fonts/AppleGothic.ttf",  # macOS
-#         "C:\\Windows\\Fonts\\malgun.ttf",  # Windows
-#     ]
-
-#     chosen = None
-#     for fp in font_candidates:
-#         if not os.path.exists(fp):
-#             continue
-
-#         # ---- 진단 로그 (Streamlit Cloud 로그에서 확인 가능) ----
-#         try:
-#             size = os.path.getsize(fp)
-#             print(f"[FONT] found: {fp} ({size} bytes)")
-#         except Exception as e:
-#             print(f"[FONT] found but cannot stat: {fp} / {e}")
-
-#         # ---- 폰트 등록 시도 ----
-#         try:
-#             fm.fontManager.addfont(fp)
-#             font_name = fm.FontProperties(fname=fp).get_name()
-#             mpl.rcParams["font.family"] = font_name
-#             mpl.rcParams["axes.unicode_minus"] = False
-#             chosen = fp
-#             print(f"[FONT] activated: {font_name} from {fp}")
-#             break
-#         except Exception as e:
-#             print(f"[FONT] failed to load {fp}: {e}")
-#             continue
-
-#     # 폰트 못 잡아도 앱은 계속 실행
-#     if chosen is None:
-#         # 폴백: 시스템에 있는 한글 폰트 찾기
-#         import subprocess
-#         try:
-#             result = subprocess.run(['fc-list', ':', 'file', 'family'], 
-#                                   capture_output=True, text=True, timeout=5)
-#             fonts = result.stdout.split('\n')
-#             for font_line in fonts:
-#                 if 'Noto' in font_line or 'Nanum' in font_line or '나눔' in font_line:
-#                     font_path = font_line.split(':')[0].strip()
-#                     if font_path and os.path.exists(font_path):
-#                         try:
-#                             fm.fontManager.addfont(font_path)
-#                             font_name = fm.FontProperties(fname=font_path).get_name()
-#                             mpl.rcParams["font.family"] = font_name
-#                             mpl.rcParams["axes.unicode_minus"] = False
-#                             chosen = font_path
-#                             print(f"[FONT] fallback activated: {font_name} from {font_path}")
-#                             break
-#                         except:
-#                             pass
-#         except:
-#             pass
-        
-#         # 최후의 폴백
-#         if chosen is None:
-#             mpl.rcParams["font.family"] = "DejaVu Sans"
-#             mpl.rcParams["axes.unicode_minus"] = False
-#             print("[FONT] fallback to DejaVu Sans (Korean may not render)")
-
-# set_korean_font()
-
 
 # ===== Supabase helpers ======================================
 from supabase import create_client, Client
@@ -811,8 +739,8 @@ def page_intro():
     ---
     
     **📧 연구자 연락처**:
-    - 류혜리 (fwm825@snu.ac.kr)
-    - 유정연 (98you21@snu.ac.kr)
+    - 정주영 (📧 juyoungc@snu.ac.kr)    
+    - 류혜리 (📧 fwm825@snu.ac.kr)
     """)
     
     st.markdown("### 📧 시작하기")
@@ -898,7 +826,7 @@ def page_basic_info():
 def page_sweet_preference():
     st.markdown("""
     <div style="text-align: center; padding: 1rem 0;">
-        <h1>🍫 단맛 선호도 조사</h1>
+        <h1>🍑 단맛 선호도 조사</h1>
     </div>
     """, unsafe_allow_html=True)
     
@@ -983,7 +911,7 @@ def page_sweet_preference():
 def page_salty_preference():
     st.markdown("""
     <div style="text-align: center; padding: 1rem 0;">
-        <h1>🧂 짠맛 선호도 조사</h1>
+        <h1>🥣 짠맛 선호도 조사</h1>
     </div>
     """, unsafe_allow_html=True)
     
@@ -1142,12 +1070,12 @@ def page_complete():
         
         <div style="display: flex; justify-content: space-around; margin: 2rem 0;">
             <div style="text-align: center; padding: 1.5rem; background: #EEF5F9; border-radius: 12px; flex: 1; margin: 0 1rem; border: 1px solid #D1E3EC;">
-                <div style="font-size: 2.5rem;">🍫</div>
+                <div style="font-size: 2.5rem;">🍑</div>
                 <div style="font-size: 1.5rem; font-weight: 700; color: #4A7899; margin: 0.5rem 0;">시료 {st.session_state.responses.get('sweet_preference', '-')}</div>
                 <div style="color: #6B9AB8;">단맛 선호</div>
             </div>
             <div style="text-align: center; padding: 1.5rem; background: #FDF6F4; border-radius: 12px; flex: 1; margin: 0 1rem; border: 1px solid #E8D5CF;">
-                <div style="font-size: 2.5rem;">🧂</div>
+                <div style="font-size: 2.5rem;">🥣</div>
                 <div style="font-size: 1.5rem; font-weight: 700; color: #A67C6D; margin: 0.5rem 0;">시료 {st.session_state.responses.get('salty_preference', '-')}</div>
                 <div style="color: #C89B8C;">짠맛 선호</div>
             </div>
@@ -1369,13 +1297,13 @@ def admin_page():
 
         with colA:
             if "단맛선호" in df_viz.columns:
-                donut_chart_counts(df_viz["단맛선호"], f"🍫 단맛 시료 선택 분포 ({selected_aff})")
+                donut_chart_counts(df_viz["단맛선호"], f"🍑 단맛 시료 선택 분포 ({selected_aff})")
             else:
                 st.info("단맛선호 컬럼이 없습니다.")
 
         with colB:
             if "짠맛선호" in df_viz.columns:
-                donut_chart_counts(df_viz["짠맛선호"], f"🧂 짠맛 시료 선택 분포 ({selected_aff})")
+                donut_chart_counts(df_viz["짠맛선호"], f"🥣 짠맛 시료 선택 분포 ({selected_aff})")
             else:
                 st.info("짠맛선호 컬럼이 없습니다.")
 
@@ -1507,7 +1435,7 @@ def main():
             <p>서울대학교<br>정밀푸드솔루션연구실</p>
             <br>
             <p><strong>문의</strong></p>
-            <p>fwm825@snu.ac.kr<br>98you21@snu.ac.kr</p>
+            <p>📞 02-880-4667</p>
         </div>
         """, unsafe_allow_html=True)
     
