@@ -739,11 +739,11 @@ def page_intro():
     ---
     
     **📧 연구자 연락처**:
-    - 정주영 (📧 juyoungc@snu.ac.kr)    
-    - 류혜리 (📧 fwm825@snu.ac.kr)
+    - 정주영 (juyoungc@snu.ac.kr)    
+    - 류혜리 (fwm825@snu.ac.kr)
     """)
     
-    st.markdown("### 📧 시작하기")
+    st.markdown("### 시작하기")
     email = st.text_input("이메일 주소를 입력해주세요 *", placeholder="example@email.com", key="email_input")
     
     col1, col2, col3 = st.columns([1, 2, 1])
