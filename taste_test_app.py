@@ -9,77 +9,77 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import matplotlib.font_manager as fm
 
-def set_korean_font():
-    font_candidates = [
-        # 로컬 fonts 폴더에서 먼저 찾기 (깃허브 구조)
-        os.path.join(os.path.dirname(__file__), "fonts", "NanumGothic.ttf"),
-        os.path.join(os.getcwd(), "fonts", "NanumGothic.ttf"),
-        # 시스템 폰트 경로
-        "/usr/share/fonts/truetype/nanum/NanumGothic.ttf",
-        "/usr/share/fonts/truetype/nanum/NanumGothicBold.ttf",
-        "/usr/share/fonts/noto-cjk/NotoSansCJK-Regular.ttc",
-        # 추가 시스템 경로
-        "/System/Library/Fonts/AppleGothic.ttf",  # macOS
-        "C:\\Windows\\Fonts\\malgun.ttf",  # Windows
-    ]
+# def set_korean_font():
+#     font_candidates = [
+#         # 로컬 fonts 폴더에서 먼저 찾기 (깃허브 구조)
+#         os.path.join(os.path.dirname(__file__), "fonts", "NanumGothic.ttf"),
+#         os.path.join(os.getcwd(), "fonts", "NanumGothic.ttf"),
+#         # 시스템 폰트 경로
+#         "/usr/share/fonts/truetype/nanum/NanumGothic.ttf",
+#         "/usr/share/fonts/truetype/nanum/NanumGothicBold.ttf",
+#         "/usr/share/fonts/noto-cjk/NotoSansCJK-Regular.ttc",
+#         # 추가 시스템 경로
+#         "/System/Library/Fonts/AppleGothic.ttf",  # macOS
+#         "C:\\Windows\\Fonts\\malgun.ttf",  # Windows
+#     ]
 
-    chosen = None
-    for fp in font_candidates:
-        if not os.path.exists(fp):
-            continue
+#     chosen = None
+#     for fp in font_candidates:
+#         if not os.path.exists(fp):
+#             continue
 
-        # ---- 진단 로그 (Streamlit Cloud 로그에서 확인 가능) ----
-        try:
-            size = os.path.getsize(fp)
-            print(f"[FONT] found: {fp} ({size} bytes)")
-        except Exception as e:
-            print(f"[FONT] found but cannot stat: {fp} / {e}")
+#         # ---- 진단 로그 (Streamlit Cloud 로그에서 확인 가능) ----
+#         try:
+#             size = os.path.getsize(fp)
+#             print(f"[FONT] found: {fp} ({size} bytes)")
+#         except Exception as e:
+#             print(f"[FONT] found but cannot stat: {fp} / {e}")
 
-        # ---- 폰트 등록 시도 ----
-        try:
-            fm.fontManager.addfont(fp)
-            font_name = fm.FontProperties(fname=fp).get_name()
-            mpl.rcParams["font.family"] = font_name
-            mpl.rcParams["axes.unicode_minus"] = False
-            chosen = fp
-            print(f"[FONT] activated: {font_name} from {fp}")
-            break
-        except Exception as e:
-            print(f"[FONT] failed to load {fp}: {e}")
-            continue
+#         # ---- 폰트 등록 시도 ----
+#         try:
+#             fm.fontManager.addfont(fp)
+#             font_name = fm.FontProperties(fname=fp).get_name()
+#             mpl.rcParams["font.family"] = font_name
+#             mpl.rcParams["axes.unicode_minus"] = False
+#             chosen = fp
+#             print(f"[FONT] activated: {font_name} from {fp}")
+#             break
+#         except Exception as e:
+#             print(f"[FONT] failed to load {fp}: {e}")
+#             continue
 
-    # 폰트 못 잡아도 앱은 계속 실행
-    if chosen is None:
-        # 폴백: 시스템에 있는 한글 폰트 찾기
-        import subprocess
-        try:
-            result = subprocess.run(['fc-list', ':', 'file', 'family'], 
-                                  capture_output=True, text=True, timeout=5)
-            fonts = result.stdout.split('\n')
-            for font_line in fonts:
-                if 'Noto' in font_line or 'Nanum' in font_line or '나눔' in font_line:
-                    font_path = font_line.split(':')[0].strip()
-                    if font_path and os.path.exists(font_path):
-                        try:
-                            fm.fontManager.addfont(font_path)
-                            font_name = fm.FontProperties(fname=font_path).get_name()
-                            mpl.rcParams["font.family"] = font_name
-                            mpl.rcParams["axes.unicode_minus"] = False
-                            chosen = font_path
-                            print(f"[FONT] fallback activated: {font_name} from {font_path}")
-                            break
-                        except:
-                            pass
-        except:
-            pass
+#     # 폰트 못 잡아도 앱은 계속 실행
+#     if chosen is None:
+#         # 폴백: 시스템에 있는 한글 폰트 찾기
+#         import subprocess
+#         try:
+#             result = subprocess.run(['fc-list', ':', 'file', 'family'], 
+#                                   capture_output=True, text=True, timeout=5)
+#             fonts = result.stdout.split('\n')
+#             for font_line in fonts:
+#                 if 'Noto' in font_line or 'Nanum' in font_line or '나눔' in font_line:
+#                     font_path = font_line.split(':')[0].strip()
+#                     if font_path and os.path.exists(font_path):
+#                         try:
+#                             fm.fontManager.addfont(font_path)
+#                             font_name = fm.FontProperties(fname=font_path).get_name()
+#                             mpl.rcParams["font.family"] = font_name
+#                             mpl.rcParams["axes.unicode_minus"] = False
+#                             chosen = font_path
+#                             print(f"[FONT] fallback activated: {font_name} from {font_path}")
+#                             break
+#                         except:
+#                             pass
+#         except:
+#             pass
         
-        # 최후의 폴백
-        if chosen is None:
-            mpl.rcParams["font.family"] = "DejaVu Sans"
-            mpl.rcParams["axes.unicode_minus"] = False
-            print("[FONT] fallback to DejaVu Sans (Korean may not render)")
+#         # 최후의 폴백
+#         if chosen is None:
+#             mpl.rcParams["font.family"] = "DejaVu Sans"
+#             mpl.rcParams["axes.unicode_minus"] = False
+#             print("[FONT] fallback to DejaVu Sans (Korean may not render)")
 
-set_korean_font()
+# set_korean_font()
 
 
 # ===== Supabase helpers ======================================
@@ -1209,7 +1209,10 @@ def admin_login():
 
 # 추가
 def donut_chart_counts(series: pd.Series, title: str):
-    """값 분포를 도넛 차트로 시각화 - 파스텔 색상"""
+    """
+    값 분포를 도넛 차트로 시각화 - 파스텔 색상
+    한글 폰트 문제 해결: 제목을 matplotlib이 아닌 Streamlit으로 표시
+    """
     s = series.dropna().astype(str)
     s = s[s != ""]
     if s.empty:
@@ -1218,59 +1221,63 @@ def donut_chart_counts(series: pd.Series, title: str):
 
     counts = s.value_counts().sort_index()
 
-    fig, ax = plt.subplots(figsize=(5, 5))
-    fig.patch.set_facecolor('white')
-    
-    # 파스텔 톤 색상 팔레트 (배경과 어울리게)
+    # ============ 파스텔 색상 정의 ============
     pastel_colors = ['#A5D6A7', '#C5A5D8', '#FFB6B9', '#FED8B1', '#B4E7FF', 
                      '#C8E6C9', '#B2DFDB', '#FFCCBC', '#F8BBD0', '#E1BEE7']
     
-    # 시료 개수에 맞게 색상 할당
-    colors = pastel_colors[:len(counts)] if len(counts) <= len(pastel_colors) else (pastel_colors * (len(counts) // len(pastel_colors) + 1))[:len(counts)]
+    colors = pastel_colors[:len(counts)] if len(counts) <= len(pastel_colors) else (
+        pastel_colors * (len(counts) // len(pastel_colors) + 1))[:len(counts)]
     
-    # 현재 설정된 한글 폰트명 가져오기
-    font_name = mpl.rcParams.get("font.family", ["DejaVu Sans"])
-    if isinstance(font_name, list):
-        font_name = font_name[0]
+    # ============ Figure & Axis 생성 ============
+    fig = plt.figure(figsize=(6, 6), dpi=100)
+    fig.patch.set_facecolor('white')
+    ax = fig.add_subplot(111)
     
-    # 파이 차트 생성
+    # ============ 파이 차트 그리기 (제목 없음!) ============
     wedges, texts, autotexts = ax.pie(
         counts.values,
-        labels=counts.index,
-        autopct=lambda p: f"{p:.1f}%",
+        labels=[str(label) for label in counts.index],
+        autopct='%1.1f%%',
         startangle=90,
         colors=colors,
-        textprops={'fontname': font_name, 'fontsize': 11, 'weight': 'bold'}
+        textprops={
+            'fontsize': 14,
+            'weight': 'bold',
+            'color': '#2E5945'
+        }
     )
     
-    # 라벨 텍스트 스타일 설정 (시료 번호)
+    # ============ 라벨 스타일 설정 ============
     for text in texts:
-        text.set_fontsize(14)
+        text.set_fontsize(15)
         text.set_weight('bold')
         text.set_color('#2E5945')
-        text.set_fontname(font_name)
     
-    # 퍼센트 텍스트 스타일 (어두운 색상으로 가시성 향상)
+    # ============ 퍼센트 텍스트 스타일 설정 ============
     for autotext in autotexts:
-        autotext.set_color('#2E5945')  # 흰색에서 어두운 초록색으로 변경
-        autotext.set_fontsize(12)
+        autotext.set_fontsize(13)
         autotext.set_weight('bold')
-        autotext.set_fontname(font_name)
+        autotext.set_color('#2E5945')
     
-    # 도넛 효과
-    centre_circle = plt.Circle((0, 0), 0.65, fc="white")
-    fig.gca().add_artist(centre_circle)
-
-    # 제목에도 폰트 설정
-    ax.set_title(title, fontname=font_name, fontsize=14, weight='bold', color='#2E5945', pad=20)
-    ax.axis("equal")
+    # ============ 도넛 효과 ============
+    centre_circle = plt.Circle((0, 0), 0.65, fc='white', edgecolor='white', linewidth=2)
+    ax.add_artist(centre_circle)
     
-    # 한글 마이너스 기호 처리
-    mpl.rcParams["axes.unicode_minus"] = False
-
-    st.pyplot(fig, use_container_width=True)
-
-    # 숫자 테이블도 같이 보면 좋아서 같이 출력
+    ax.axis('equal')
+    plt.tight_layout()
+    
+    # ============ Streamlit으로 제목 표시 (한글 정상!) ============
+    st.markdown(f"### {title}")
+    
+    # ============ 차트 렌더링 ============
+    try:
+        st.pyplot(fig, use_container_width=True, dpi=100)
+    except Exception as e:
+        st.error(f"차트 렌더링 중 오류: {e}")
+    finally:
+        plt.close(fig)
+    
+    # ============ 데이터 테이블 ============
     st.dataframe(
         counts.rename("응답 수").reset_index().rename(columns={"index": "시료"}),
         use_container_width=True,
